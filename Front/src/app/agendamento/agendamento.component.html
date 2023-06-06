@@ -1,0 +1,37 @@
+<div *ngIf="!editMode">
+  <p-table [value]="agendamentos" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+          <th>Data</th>
+          <th>Hora</th>
+          <th>Nome do Serviço</th>
+          <th>Nome do Cliente</th>
+          <th>Status do Agendamento</th>
+          <th>Observação do Agendamento</th>
+          <th>Login do Funcionário</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-agendamento>
+        <tr (click)="editarAgendamento(agendamento)" >
+            <td>{{agendamento.datas | date:'dd/MM/yyyy'}}</td>
+            <td>{{agendamento.hora | date:'HH:mm'}}</td>
+            <td>{{agendamento.servico.nome}}</td>
+            <td>{{agendamento.cliente.nome}}</td>
+            <td>{{agendamento.status}}</td>
+            <td>{{agendamento.observacao}}</td>
+            <td>{{agendamento.respAgendamento.login}}</td>
+            <td>
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-secondary">Editar</button>
+              <!--<button pButton type="button" icon="pi pi-pencil" (click)="openEditDialog(agendamento)">Editar</button>-->
+              <!--<button (click)="editarAgendamento(agendamento)">Editar</button>  Botão para editar -->
+              <button (click)="excluirAgendamento(agendamento)">Excluir</button> <!-- Botão para excluir -->
+            </td>
+        </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div *ngIf="editMode">
+  <!-- Componentes para edição do agendamento -->
+  <app-agendamento-edicao [agendamento]="agendamentoSelecionado"></app-agendamento-edicao>
+</div>

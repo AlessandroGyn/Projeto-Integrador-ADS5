@@ -1,0 +1,55 @@
+<!-- agendamento-edicao.component.html -->
+<div class="agendamento-edicao" *ngIf="agendamento">
+  <!-- Campos de edição do agendamento -->
+  <div class="field">
+    <label for="data">Data:</label>
+    <input type="text" pInputText id="data" [(ngModel)]="agendamento.datas" >
+  </div>
+
+  <div class="field">
+    <label for="hora">Hora:</label>
+    <input type="text" pInputText id="hora" [(ngModel)]="agendamento.hora">
+  </div>
+
+  <div class="field">
+    <label for="servico">Nome do Serviço:</label>
+    <input type="text" pInputText id="servico" [(ngModel)]="agendamento.servico">
+  </div>
+
+  <div class="field">
+    <label for="cliente">Nome do Cliente:</label>
+    <input type="text" pInputText id="cliente" [(ngModel)]="agendamento.cliente">
+  </div>
+
+  <div class="field">
+    <label for="status">Status do Agendamento:</label>
+    <input type="text" pInputText id="status" [(ngModel)]="agendamento.status">
+  </div>
+
+  <div class="field">
+    <label for="observacao">Observação do Agendamento:</label>
+    <input type="text" pInputText id="observacao" [(ngModel)]="agendamento.observacao">
+  </div>
+
+  <!-- não edita funcionario por enquanto, por que precisa pegar "login" e não consegue
+  <div class="field">
+    <label for="login">Login do Funcionário:</label>
+
+    <input type="text" pInputText id="login" [(ngModel)]="agendamento.respagendamento.login">
+  </div>
+ -->
+ <!--
+ <div class="field">
+  <label for="login">Login do Funcionário:</label>
+  <div>{{agendamento.respAgendamento.login}}</div>
+  <input type="text" pInputText id="login" [(ngModel)]="getLogin()" disabled>
+</div>
+-->
+  <!-- Adicione mais campos de acordo com sua estrutura de dados -->
+
+  <!-- Botões para salvar e cancelar edição -->
+  <div class="buttons">
+    <button pButton type="button" label="Salvar" (click)="salvarEdicao()"></button>
+    <button pButton type="button" label="Cancelar" (click)="cancelarEdicao()"></button>
+  </div>
+</div>

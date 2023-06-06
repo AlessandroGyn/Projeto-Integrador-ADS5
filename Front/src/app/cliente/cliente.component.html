@@ -1,0 +1,45 @@
+<div class="text-center divCliente bg-light">
+  <h2 class="tituloCliente">Cadastro de Cliente</h2>
+  <div class="d-flex linhaCadCliente">
+
+    <div class="form-group">
+      <span class="p-float-label">
+        <input id="nome" type="text" class="inputClienteNome" pInputText [(ngModel)]="obj.nome" required />
+        <label for="nome">Nome:</label>
+      </span>
+    </div>
+
+    <div class="form-group">
+      <span class="p-float-label">
+        <input id="uf" type="text" class="inputClienteUF" pInputText [(ngModel)]="obj.uf" required />
+        <label for="uf">UF:</label>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="d-flex linhaCadCliente">
+
+    <div class="form-group">
+      <span class="p-float-label">
+        <input id="email" type="email" class="inputClienteEmail" pInputText [(ngModel)]="obj.email" required />
+        <label for="email">Email:</label>
+      </span>
+    </div>
+
+    <div class="form-group">
+      <span class="p-float-label">
+        <input type="text" id="telefone" class="inputClienteUF" pInputText [(ngModel)]="obj.telefone" required>
+        <label for="telefone">Telefone:</label>
+      </span>
+    </div>
+
+
+
+  </div>
+
+  <button pButton type="button" (click)="adicionar()" label="Salvar" class="p-button p-button-success p-button-text p-button-raised p-button-rounded salvar-button" icon="pi pi-check" iconPos="left"></button>
+  <p-messages [value]="msgs"></p-messages>
+
+</div>
+
