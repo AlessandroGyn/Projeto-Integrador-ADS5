@@ -30,7 +30,7 @@ public class FuncionarioResource {
 	public ResponseEntity<?> findById(@PathVariable Integer id) {
 		Optional<Funcionario> opF = funcionarioRepository.findById(id);
 		if (opF.isEmpty()) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.notFound().build();  //noContent
 		} else {
 			return ResponseEntity.ok(opF);
 		}
@@ -46,9 +46,13 @@ public class FuncionarioResource {
 	@PutMapping("/{id}") 
 	public ResponseEntity<Funcionario> update(@PathVariable Integer id, @Valid @RequestBody Funcionario funcionario) {
 		Optional<Funcionario> funcionarioBanco = funcionarioRepository.findById(id);
-		BeanUtils.copyProperties(funcionario, funcionarioBanco.get(), "id");
-		funcionarioRepository.save(funcionarioBanco.get());
-		return ResponseEntity.ok(funcionario);
+		if (funcionarioBanco.isPresent()) {
+	        BeanUtils.copyProperties(funcionario, funcionarioBanco.get(), "id");
+	        funcionarioRepository.save(funcionarioBanco.get());
+	        return ResponseEntity.ok(funcionario);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	  
 	@DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 package com.barbershowa.model;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,12 +26,16 @@ public class Agendamento {
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "respAgendamento")
+    @JoinColumn(name = "respagendamento")
     private Funcionario respAgendamento;
 
-    @ManyToOne
-    @JoinColumn(name = "servico")
-    private Servico servico;
+    @ManyToMany
+    @JoinTable(
+        name = "Agendamento_Servico",
+		joinColumns = @JoinColumn(name = "agendamento_id"),
+        inverseJoinColumns = @JoinColumn(name = "servico_id")
+    )
+    private List<Servico> servicos;
 
 	public Integer getId() {
 		return id;
@@ -38,8 +44,6 @@ public class Agendamento {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 
 	public Date getDatas() {
 		return datas;
@@ -73,6 +77,14 @@ public class Agendamento {
 		this.observacao = observacao;
 	}
 
+	public OrdemServico getOrdemServico() {
+		return ordemServico;
+	}
+
+	public void setOrdemServico(OrdemServico ordemServico) {
+		this.ordemServico = ordemServico;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -80,8 +92,6 @@ public class Agendamento {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-	
 
 	public Funcionario getRespAgendamento() {
 		return respAgendamento;
@@ -91,20 +101,14 @@ public class Agendamento {
 		this.respAgendamento = respAgendamento;
 	}
 
-	public Servico getServico() {
-		return servico;
+	public List<Servico> getServicos() {
+		return servicos;
 	}
 
-	public void setServico(Servico servico) {
-		this.servico = servico;
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
 	}
 
-	public OrdemServico getOrdemServico() {
-		return ordemServico;
-	}
-
-	public void setOrdemServico(OrdemServico ordemServico) {
-		this.ordemServico = ordemServico;
-	}
+	
 
 }

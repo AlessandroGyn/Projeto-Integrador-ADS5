@@ -13,11 +13,16 @@ public class Servico {
 
     private String nome;
     private String descricao;
+    
+    
+    @Column(name = "precocusto")
     private Float precoCusto;
+    
+    @Column(name = "precovenda")
     private Float precoVenda;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "servico")
+    @ManyToMany(mappedBy = "servicos") // atributo na classe "Agendamento"
+    @JsonIgnore // para evitar recursão infinita na serialização JSON
     private List<Agendamento> agendamentos;
 
 	public Integer getId() {
@@ -67,5 +72,7 @@ public class Servico {
 	public void setAgendamentos(List<Agendamento> agendamentos) {
 		this.agendamentos = agendamentos;
 	}
+
+	
 
 }

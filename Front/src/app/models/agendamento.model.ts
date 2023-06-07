@@ -8,8 +8,7 @@ export class Agendamento {
   hora: string = '';
   status: string = '';
   observacao: string = '';
-  funcao: string = '';
-  cliente: string = '';
-  respagendamento: string = '';
-  servico: string = '';
+  cliente!: Cliente;
+  respagendamento!: Funcionario;
+  servico!: Servico;
 }
