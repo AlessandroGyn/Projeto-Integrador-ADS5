@@ -13,8 +13,8 @@ public class Servico {
 
     private String nome;
     private String descricao;
-    private Float precocusto;
-    private Float precovenda;
+    private Float precoCusto;
+    private Float precoVenda;
 
     @JsonIgnore
     @OneToMany(mappedBy = "servico")
@@ -45,19 +45,19 @@ public class Servico {
 	}
 
 	public Float getPrecoCusto() {
-		return precocusto;
+		return precoCusto;
 	}
 
 	public void setPrecoCusto(Float precoCusto) {
-		this.precocusto = precoCusto;
+		this.precoCusto = precoCusto;
 	}
 
 	public Float getPrecoVenda() {
-		return precovenda;
+		return precoVenda;
 	}
 
 	public void setPrecoVenda(Float precoVenda) {
-		this.precovenda = precoVenda;
+		this.precoVenda = precoVenda;
 	}
 
 	public List<Agendamento> getAgendamentos() {

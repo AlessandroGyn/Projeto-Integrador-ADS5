@@ -12,8 +12,8 @@ public class OrdemServico {
     @Column(name = "id")
     private Integer id;
 
-    private Date datahorainicio;
-    private Date datahoratermino;
+    private Date dataHoraInicio;
+    private Date dataHoraTermino;
     private String status;
     private Float valor;
 
@@ -28,22 +28,22 @@ public class OrdemServico {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "respos")
+    @JoinColumn(name = "respOS")
     private Funcionario respOS;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "execservico")
+    @JoinColumn(name = "execServico")
     private Funcionario execServico;
 
     public OrdemServico() {}
     
-    public OrdemServico(Integer id, Date datanorainicio, Date datahoratermino, String status, Float valor,
+    public OrdemServico(Integer id, Date dataHoraInicio, Date dataHoraTermino, String status, Float valor,
 			Agendamento agendamento, Servico servico, Funcionario respOS, Funcionario execServico) {
 		super();
 		this.id = id;
-		this.datahorainicio = datanorainicio;
-		this.datahoratermino = datahoratermino;
+		this.dataHoraInicio = dataHoraInicio;
+		this.dataHoraTermino = dataHoraTermino;
 		this.status = status;
 		this.valor = valor;
 		this.agendamento = agendamento;
@@ -61,19 +61,19 @@ public class OrdemServico {
 	}
 
 	public Date getDataHoraInicio() {
-		return datahorainicio;
+		return dataHoraInicio;
 	}
 
 	public void setDataHoraInicio(Date dataHoraInicio) {
-		this.datahorainicio = dataHoraInicio;
+		this.dataHoraInicio = dataHoraInicio;
 	}
 
 	public Date getDataHoraTermino() {
-		return datahoratermino;
+		return dataHoraTermino;
 	}
 
 	public void setDataHoraTermino(Date dataHoraTermino) {
-		this.datahoratermino = dataHoraTermino;
+		this.dataHoraTermino = dataHoraTermino;
 	}
 
 	public String getStatus() {
@@ -123,5 +123,7 @@ public class OrdemServico {
 	public void setExecServico(Funcionario execServico) {
 		this.execServico = execServico;
 	}
+
+	
 
 }

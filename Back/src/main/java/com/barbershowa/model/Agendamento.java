@@ -24,8 +24,8 @@ public class Agendamento {
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "respagendamento")
-    private Funcionario respagendamento;
+    @JoinColumn(name = "respAgendamento")
+    private Funcionario respAgendamento;
 
     @ManyToOne
     @JoinColumn(name = "servico")
@@ -81,12 +81,14 @@ public class Agendamento {
 		this.cliente = cliente;
 	}
 
+	
+
 	public Funcionario getRespAgendamento() {
-		return respagendamento;
+		return respAgendamento;
 	}
 
-	public void setRespAgendamento(Funcionario respagendamento) {
-		this.respagendamento = respagendamento;
+	public void setRespAgendamento(Funcionario respAgendamento) {
+		this.respAgendamento = respAgendamento;
 	}
 
 	public Servico getServico() {
