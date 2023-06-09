@@ -8,7 +8,7 @@ export class Agendamento {
   hora: string = '';
   status: string = '';
   observacao: string = '';
-  cliente!: Cliente;
-  respagendamento!: Funcionario;
-  servico!: Servico;
+  cliente: Cliente = new Cliente();
+  respAgendamento: Funcionario = new Funcionario();
+  servico: Servico = new Servico();
 }

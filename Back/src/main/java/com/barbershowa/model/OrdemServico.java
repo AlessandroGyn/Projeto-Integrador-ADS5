@@ -12,14 +12,18 @@ public class OrdemServico {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "datahorainicio")  // nome da coluna no BD
     private Date dataHoraInicio;
+    
+    @Column(name = "datahoratermino")
     private Date dataHoraTermino;
+    
     private String status;
     private Float valor;
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "agendamento")
+    @JoinColumn(name = "agendamento") // nome da coluna no BD
     private Agendamento agendamento;
 
     @ManyToOne
@@ -28,12 +32,12 @@ public class OrdemServico {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "respOS")
+    @JoinColumn(name = "respos")
     private Funcionario respOS;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "execServico")
+    @JoinColumn(name = "execservico")
     private Funcionario execServico;
 
     public OrdemServico() {}

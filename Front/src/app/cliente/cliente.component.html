@@ -1,45 +1,89 @@
-<div class="text-center divCliente bg-light">
-  <h2 class="tituloCliente">Cadastro de Cliente</h2>
-  <div class="d-flex linhaCadCliente">
 
-    <div class="form-group">
-      <span class="p-float-label">
-        <input id="nome" type="text" class="inputClienteNome" pInputText [(ngModel)]="obj.nome" required />
-        <label for="nome">Nome:</label>
-      </span>
-    </div>
-
-    <div class="form-group">
-      <span class="p-float-label">
-        <input id="uf" type="text" class="inputClienteUF" pInputText [(ngModel)]="obj.uf" required />
-        <label for="uf">UF:</label>
-      </span>
-    </div>
-
-  </div>
-
-  <div class="d-flex linhaCadCliente">
-
-    <div class="form-group">
-      <span class="p-float-label">
-        <input id="email" type="email" class="inputClienteEmail" pInputText [(ngModel)]="obj.email" required />
-        <label for="email">Email:</label>
-      </span>
-    </div>
-
-    <div class="form-group">
-      <span class="p-float-label">
-        <input type="text" id="telefone" class="inputClienteUF" pInputText [(ngModel)]="obj.telefone" required>
-        <label for="telefone">Telefone:</label>
-      </span>
-    </div>
-
-
-
-  </div>
-
-  <button pButton type="button" (click)="adicionar()" label="Salvar" class="p-button p-button-success p-button-text p-button-raised p-button-rounded salvar-button" icon="pi pi-check" iconPos="left"></button>
-  <p-messages [value]="msgs"></p-messages>
-
-</div>
-
+<button pButton pRipple type="button" routerLink="/cliente-cadastro" label="Cadastrar Cliente" class="p-button p-button-primary" style="margin-left: 10vw;"></button>
+<hr>
+<p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
+  <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Email</th>
+        <th>UF</th>
+        <th>Ações</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-cliente >
+    <tr>
+      <td>
+        <ng-container *ngIf="!cliente.editMode; else nomeEditField">
+          {{cliente.nome}}
+        </ng-container>
+        <ng-template #nomeEditField>
+          <input type="text" [(ngModel)]="cliente.nome" />
+        </ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="!cliente.editMode; else telefoneEditField">
+          {{cliente.telefone}}
+        </ng-container>
+        <ng-template #telefoneEditField>
+          <input type="text" [(ngModel)]="cliente.telefone" />
+        </ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="!cliente.editMode; else emailEditField">
+          {{cliente.email}}
+        </ng-container>
+        <ng-template #emailEditField>
+          <input type="text" [(ngModel)]="cliente.email" />
+        </ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="!cliente.editMode; else ufEditField">
+          {{cliente.uf}}
+        </ng-container>
+        <ng-template #ufEditField>
+          <input type="text" [(ngModel)]="cliente.uf" />
+        </ng-template>
+      </td>
+      <td>
+        <span class="p-buttonset">
+          <button
+            *ngIf="!cliente.editMode"
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-secondary"
+            (click)="alterar(cliente)"
+          ></button>
+          <button
+            *ngIf="cliente.editMode"
+            pButton
+            type="button"
+            label="Save"
+            icon="pi pi-check"
+            class="p-button-rounded p-button-success"
+            (click)="salvar(cliente)"
+          ></button>
+          <button
+            *ngIf="cliente.editMode"
+            pButton
+            type="button"
+            label="Cancel"
+            icon="pi pi-times"
+            class="p-button-rounded p-button-danger"
+            (click)="cancelar(cliente)"
+          ></button>
+          <button
+            *ngIf="!cliente.editMode"
+            (click)="excluir(cliente)"
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+          ></button>
+          <!-- Botão para excluir -->
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

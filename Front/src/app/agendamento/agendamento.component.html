@@ -12,7 +12,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-agendamento>
-        <tr (click)="editarAgendamento(agendamento)" >
+        <tr >
             <td>{{agendamento.datas | date:'dd/MM/yyyy'}}</td>
             <td>{{agendamento.hora | date:'HH:mm'}}</td>
             <td>{{agendamento.servico.nome}}</td>
@@ -21,7 +21,7 @@
             <td>{{agendamento.observacao}}</td>
             <td>{{agendamento.respAgendamento.login}}</td>
             <td>
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-secondary">Editar</button>
+              <button (click)="editarAgendamento(agendamento)" pButton icon="pi pi-pencil" class="p-button-rounded p-button-secondary">Editar</button>
               <!--<button pButton type="button" icon="pi pi-pencil" (click)="openEditDialog(agendamento)">Editar</button>-->
               <!--<button (click)="editarAgendamento(agendamento)">Editar</button>  Botão para editar -->
               <button (click)="excluirAgendamento(agendamento)">Excluir</button> <!-- Botão para excluir -->

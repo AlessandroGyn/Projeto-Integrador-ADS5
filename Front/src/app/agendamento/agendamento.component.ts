@@ -3,8 +3,6 @@ import { AgendamentoEdicaoComponent } from '@app/agendamento-edicao/agendamento-
 import { Agendamento } from '@app/models/agendamento.model';
 import { Funcionario } from '@app/models/funcionario.model';
 import { AgendamentoService } from '@app/services/agendamento.service';
-//import { MatDialog } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-agendamento',

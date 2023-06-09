@@ -26,7 +26,7 @@ export class AgendamentoService {
 
 
 
-  // abaixo pode apagar
+// abaixo não esta sendo usado ainda
 
   consultar (): Observable<Agendamento[]> {
       return this.http.get<Agendamento[]>(url);

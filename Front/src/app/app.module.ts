@@ -29,6 +29,9 @@ import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ClienteCadastroComponent } from './cliente-cadastro/cliente-cadastro.component';
+import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     imports: [
@@ -42,7 +45,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ButtonModule,
         MessagesModule,
         MessageModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        AccordionModule,
+        CommonModule
     ],
     declarations: [
         AppComponent,
@@ -53,7 +58,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         FuncionarioComponent,
         OrdemservicoComponent,
         ServicoComponent,
-        AgendamentoEdicaoComponent
+        AgendamentoEdicaoComponent,
+        ClienteCadastroComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -29,13 +29,10 @@ public class Agendamento {
     @JoinColumn(name = "respagendamento")
     private Funcionario respAgendamento;
 
-    @ManyToMany
-    @JoinTable(
-        name = "Agendamento_Servico",
-		joinColumns = @JoinColumn(name = "agendamento_id"),
-        inverseJoinColumns = @JoinColumn(name = "servico_id")
-    )
-    private List<Servico> servicos;
+    @ManyToOne
+    @JoinColumn(name = "servico")
+    private Servico servico;
+
 
 	public Integer getId() {
 		return id;
@@ -101,13 +98,14 @@ public class Agendamento {
 		this.respAgendamento = respAgendamento;
 	}
 
-	public List<Servico> getServicos() {
-		return servicos;
+	public Servico getServico() {
+		return servico;
 	}
 
-	public void setServicos(List<Servico> servicos) {
-		this.servicos = servicos;
+	public void setServico(Servico servico) {
+		this.servico = servico;
 	}
+
 
 	
 

@@ -21,7 +21,7 @@ public class Servico {
     @Column(name = "precovenda")
     private Float precoVenda;
 
-    @ManyToMany(mappedBy = "servicos") // atributo na classe "Agendamento"
+    @OneToMany(mappedBy = "servico") // atributo na classe "Agendamento"
     @JsonIgnore // para evitar recursão infinita na serialização JSON
     private List<Agendamento> agendamentos;
 

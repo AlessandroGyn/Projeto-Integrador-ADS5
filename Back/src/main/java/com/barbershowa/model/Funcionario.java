@@ -18,7 +18,7 @@ public class Funcionario  {
     private Float comissao;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "respAgendamento")
+    @OneToMany(mappedBy = "respAgendamento") // atributo da classe "Agendamento"
     private List<Agendamento> agendamentos;
 
     @JsonIgnore

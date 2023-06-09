@@ -16,8 +16,8 @@ public class Cliente {
     private String email;
     private String uf;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
     private List<Agendamento> agendamentos;
 
 	public Integer getId() {
