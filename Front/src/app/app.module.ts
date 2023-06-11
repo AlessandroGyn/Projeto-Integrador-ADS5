@@ -22,16 +22,23 @@ import { FuncionarioService } from './services/funcionario.service';
 import { OrdemservicoService } from './services/ordemservico.service';
 import { ServicoService } from './services/servico.service';
 import { TableModule } from 'primeng/table';
-import { AgendamentoEdicaoComponent } from './agendamento-edicao/agendamento-edicao.component';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ClienteCadastroComponent } from './cliente-cadastro/cliente-cadastro.component';
+import { ClienteCadastroComponent } from './cliente/cliente-cadastro/cliente-cadastro.component';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import { CommonModule } from '@angular/common';
+import { ConfirmationDialogComponent } from './cliente/confirmation-dialog/confirmation-dialog.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { FuncionarioCadastroComponent } from './funcionario/funcionario-cadastro/funcionario-cadastro.component';
+import { FuncionarioConfirmationDialogComponent } from './funcionario/confirmation-dialog/confirmation-dialog.component';
+import { ServicoConfirmationDialogComponent } from './servico/servicoconfirmation-dialog/servicoconfirmation-dialog.component';
+import { ServicoCadastroComponent } from './servico/servico-cadastro/servico-cadastro.component';
+import { AgendamentoconfirmationDialogComponent } from './agendamento/agendamentoconfirmation-dialog/agendamentoconfirmation-dialog.component';
+import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro/agendamento-cadastro.component';
 
 @NgModule({
     imports: [
@@ -58,8 +65,15 @@ import { CommonModule } from '@angular/common';
         FuncionarioComponent,
         OrdemservicoComponent,
         ServicoComponent,
-        AgendamentoEdicaoComponent,
-        ClienteCadastroComponent
+        ClienteCadastroComponent,
+        ConfirmationDialogComponent,
+        FuncionarioCadastroComponent,
+        FuncionarioConfirmationDialogComponent,
+        ServicoConfirmationDialogComponent,
+        ServicoCadastroComponent,
+        AgendamentoconfirmationDialogComponent,
+        AgendamentoCadastroComponent
+
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -71,7 +85,8 @@ import { CommonModule } from '@angular/common';
         FuncionarioService,
         OrdemservicoService,
         ServicoService,
-        MessageService
+        MessageService,
+        DialogService
     ],
     bootstrap: [AppComponent]
 })

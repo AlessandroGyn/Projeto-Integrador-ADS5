@@ -4,5 +4,6 @@ export class Funcionario {
   senha: string = '';
   email: string = '';
   fone: string = '';
-  comissao: string = '';
+  comissao: number = 0;
+  editMode: boolean = false;
 }

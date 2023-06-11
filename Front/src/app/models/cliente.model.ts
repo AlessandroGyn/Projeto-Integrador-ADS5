@@ -4,8 +4,5 @@ export class Cliente {
   telefone: string = '';
   email: string = '';
   uf: string = '';
-  editMode: boolean;
-  constructor() {
-    this.editMode = false; // Inicialmente, o modo de edição é desabilitado
-  }
+  editMode: boolean = false;
 }

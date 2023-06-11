@@ -1,89 +1,96 @@
-
-<button pButton pRipple type="button" routerLink="/cliente-cadastro" label="Cadastrar Cliente" class="p-button p-button-primary" style="margin-left: 10vw;"></button>
+<h1 class="page-title">CLIENTES</h1>
 <hr>
-<p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
-  <ng-template pTemplate="header">
+<button pButton pRipple type="button" routerLink="/cliente-cadastro" label="Cadastrar Cliente" class="p-button p-button-primary btnCadastrarCliente" ></button>
+<hr>
+<p-messages [value]="msgs"></p-messages>
+<div class="table-container">
+  <p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>UF</th>
+          <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cliente >
       <tr>
-        <th>Nome</th>
-        <th>Telefone</th>
-        <th>Email</th>
-        <th>UF</th>
-        <th>Ações</th>
+        <td>
+          <ng-container *ngIf="!cliente.editMode; else nomeEditField">
+            {{cliente.nome}}
+          </ng-container>
+          <ng-template #nomeEditField>
+            <input type="text" [(ngModel)]="cliente.nome" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!cliente.editMode; else telefoneEditField">
+            {{cliente.telefone}}
+          </ng-container>
+          <ng-template #telefoneEditField>
+            <input type="text" [(ngModel)]="cliente.telefone" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!cliente.editMode; else emailEditField">
+            {{cliente.email}}
+          </ng-container>
+          <ng-template #emailEditField>
+            <input type="text" [(ngModel)]="cliente.email" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!cliente.editMode; else ufEditField">
+            {{cliente.uf}}
+          </ng-container>
+          <ng-template #ufEditField>
+            <input type="text" [(ngModel)]="cliente.uf" />
+          </ng-template>
+        </td>
+        <td>
+          <span class="p-buttonset">
+            <!-- Botão para alterar -->
+            <button
+              *ngIf="!cliente.editMode"
+              pButton
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-secondary"
+              (click)="alterar(cliente)"
+            ></button>
+            <!-- Botão para salvar -->
+            <button
+              *ngIf="cliente.editMode"
+              pButton
+              type="button"
+              label="Salvar"
+              icon="pi pi-check"
+              class="p-button-rounded p-button-success"
+              (click)="salvar(cliente)"
+            ></button>
+            <!-- Botão para cancelar -->
+            <button
+              *ngIf="cliente.editMode"
+              pButton
+              type="button"
+              label="Cancelar"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger"
+              (click)="cancelar(cliente)"
+            ></button>
+            <!-- Botão para excluir -->
+            <button
+              *ngIf="!cliente.editMode"
+              (click)="openConfirmationDialog(cliente)"
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+            ></button>
+          </span>
+        </td>
       </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-cliente >
-    <tr>
-      <td>
-        <ng-container *ngIf="!cliente.editMode; else nomeEditField">
-          {{cliente.nome}}
-        </ng-container>
-        <ng-template #nomeEditField>
-          <input type="text" [(ngModel)]="cliente.nome" />
-        </ng-template>
-      </td>
-      <td>
-        <ng-container *ngIf="!cliente.editMode; else telefoneEditField">
-          {{cliente.telefone}}
-        </ng-container>
-        <ng-template #telefoneEditField>
-          <input type="text" [(ngModel)]="cliente.telefone" />
-        </ng-template>
-      </td>
-      <td>
-        <ng-container *ngIf="!cliente.editMode; else emailEditField">
-          {{cliente.email}}
-        </ng-container>
-        <ng-template #emailEditField>
-          <input type="text" [(ngModel)]="cliente.email" />
-        </ng-template>
-      </td>
-      <td>
-        <ng-container *ngIf="!cliente.editMode; else ufEditField">
-          {{cliente.uf}}
-        </ng-container>
-        <ng-template #ufEditField>
-          <input type="text" [(ngModel)]="cliente.uf" />
-        </ng-template>
-      </td>
-      <td>
-        <span class="p-buttonset">
-          <button
-            *ngIf="!cliente.editMode"
-            pButton
-            type="button"
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-secondary"
-            (click)="alterar(cliente)"
-          ></button>
-          <button
-            *ngIf="cliente.editMode"
-            pButton
-            type="button"
-            label="Save"
-            icon="pi pi-check"
-            class="p-button-rounded p-button-success"
-            (click)="salvar(cliente)"
-          ></button>
-          <button
-            *ngIf="cliente.editMode"
-            pButton
-            type="button"
-            label="Cancel"
-            icon="pi pi-times"
-            class="p-button-rounded p-button-danger"
-            (click)="cancelar(cliente)"
-          ></button>
-          <button
-            *ngIf="!cliente.editMode"
-            (click)="excluir(cliente)"
-            pButton
-            type="button"
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
-          ></button>
-          <!-- Botão para excluir -->
-        </span>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,7 +1,5 @@
 package com.barbershowa.model;
 import java.util.Date;
-import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,7 +14,7 @@ public class Agendamento {
     private Date hora;
     private String status;
     private String observacao;
-
+    
     @OneToOne
     @JoinColumn(name = "ID", referencedColumnName = "ID_PK") //id da ordem de serviço
     private OrdemServico ordemServico;
@@ -105,8 +103,5 @@ public class Agendamento {
 	public void setServico(Servico servico) {
 		this.servico = servico;
 	}
-
-
-	
 
 }

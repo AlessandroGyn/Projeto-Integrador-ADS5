@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.barbershowa.model.Funcionario;
 import com.barbershowa.model.Servico;
+import com.barbershowa.repository.AgendamentoRepository;
 import com.barbershowa.repository.ServicoRepository;
 import java.net.URI;
 import java.util.List;
@@ -20,6 +23,9 @@ public class ServicoResource {
     
 	@Autowired
 	private ServicoRepository servicoRepository;
+	
+	@Autowired
+	private AgendamentoRepository agendamentoRepository;
 	
 	@GetMapping
 	public List<Servico> list() {
@@ -54,6 +60,13 @@ public class ServicoResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Integer id) {
-		servicoRepository.deleteById(id);
+		Optional<Servico> servico = servicoRepository.findById(id);
+	    if (servico.isPresent()) {
+	        // Antes de excluir o serviço, atualize os agendamentos relacionados, troca para serviço com id=29
+	        agendamentoRepository.updateServicoIdByServicoId(29, id);
+	        // Excluir o serviço
+	        servicoRepository.deleteById(id);
+	    }
+		
 	}
 }

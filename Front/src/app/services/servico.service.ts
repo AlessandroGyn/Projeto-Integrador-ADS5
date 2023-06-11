@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Servico } from '@app/models/servico.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-const url = 'http://localhost:8080/servico';
+const url = 'http://localhost:8080/servicos';
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
@@ -24,9 +25,12 @@ export class ServicoService {
       return this.http.get<Servico>(urlLocal);
   }
 
-  adicionar (Servico: Servico): Observable<Servico> {
-      return this.http.post<Servico>(url, Servico, httpOptions);
+  adicionar(servico: Servico): Observable<Servico> {
+    servico.precoVenda = parseFloat(servico.precoVenda.toFixed(2)); // Formata o valor para duas casas decimais
+    servico.precoCusto = parseFloat(servico.precoCusto.toFixed(2)); // Formata o valor para duas casas decimais
+    return this.http.post<Servico>(url, servico, httpOptions);
   }
+
 
   alterar (id: number, Servico: Servico): Observable<any> {
       const urlLocal = `${url}/${id}`;
@@ -36,5 +40,27 @@ export class ServicoService {
   excluir (id: number): Observable<Servico> {
       const urlLocal = `${url}/${id}`;
       return this.http.delete<Servico>(urlLocal, httpOptions);
+  }
+
+  // O método consultarPorCampos() é usado para pegar todos os serviços do
+  // banco de dados e comparar com o serviço que esta sendo gravado no banco.
+  // Se já existir um serviço com todos os dados iguais = não gravar
+  // caso contrário = gravar
+  consultarPorCampos(campos: any): Observable<boolean> {
+    const urlConsulta = `${url}?nome=${campos.nome}&descricao=${campos.descricao}&precoCusto=${campos.precoCusto}&precoVenda=${campos.precoVenda}`;
+    return this.http.get<Servico[]>(urlConsulta).pipe(
+      map((servicos: Servico[]) => {
+        return servicos.some(servico => this.compararCampos(servico, campos));
+      })
+    );
+  }
+
+  compararCampos(servico: Servico, campos: any): boolean {
+    return (
+      servico.nome === campos.nome &&
+      servico.descricao === campos.descricao &&
+      servico.precoCusto === campos.precoCusto &&
+      servico.precoVenda === campos.precoVenda
+    );
   }
 }

@@ -1,1 +1,99 @@
-<p>servico works!</p>
+<h1 class="page-title">SERVIÇOS</h1>
+<hr>
+<button pButton pRipple type="button" routerLink="/servico-cadastro" label="Cadastrar Serviço" class="p-button p-button-primary btnCadastrarServico" ></button>
+<hr>
+<p-messages [value]="msgs"></p-messages>
+<div class="table-container">
+  <p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+          <th>Nome</th>
+          <th style="width: 40%;">Descrição</th>
+          <th>Preço de Custo</th>
+          <th>Preço de Venda</th>
+          <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-servico >
+      <tr>
+        <td>
+          <ng-container *ngIf="!servico.editMode; else nomeEditField">
+            {{servico.nome}}
+          </ng-container>
+          <ng-template #nomeEditField>
+            <input type="text" [(ngModel)]="servico.nome" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!servico.editMode; else descricaoEditField">
+            {{servico.descricao}}
+          </ng-container>
+          <ng-template #descricaoEditField>
+            <input type="text" [(ngModel)]="servico.descricao" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!servico.editMode; else precoCustoEditField">
+            {{ servico.precoCusto | number: '1.2-2' }}
+          </ng-container>
+          <ng-template #precoCustoEditField>
+            <input type="number" [(ngModel)]="servico.precoCusto" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!servico.editMode; else precoVendaEditField">
+            {{ servico.precoVenda | number: '1.2-2' }}
+          </ng-container>
+          <ng-template #precoVendaEditField>
+            <input type="number" [(ngModel)]="servico.precoVenda" />
+          </ng-template>
+        </td>
+
+        <td >
+          <div style="width: max-content;display:flex;">
+            <span class="p-buttonset">
+              <!-- Botão para alterar -->
+              <button
+                *ngIf="!servico.editMode"
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-secondary p-button-sm"
+                (click)="alterar(servico)"
+              ></button>
+              <!-- Botão para excluir -->
+              <button
+                *ngIf="!servico.editMode"
+                (click)="openConfirmationDialog(servico)"
+                pButton
+                type="button"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-sm"
+              ></button>
+              <!-- Botão para salvar -->
+              <button
+                *ngIf="servico.editMode"
+                pButton
+                type="button"
+                label="Salvar"
+                icon="pi pi-check"
+                class="p-button-rounded p-button-success p-button-sm"
+                (click)="salvar(servico)"
+              ></button>
+              <!-- Botão para cancelar -->
+              <button
+                *ngIf="servico.editMode"
+                pButton
+                type="button"
+                label="Cancelar"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger p-button-sm"
+                (click)="cancelar(servico)"
+              ></button>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

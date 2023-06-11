@@ -1,19 +1,27 @@
+<h1 class="page-title">FUNCIONÁRIOS - CADASTRO</h1>
+<hr>
 <div class="card" style="margin: 3vh 10vw 5vh 10vw;"> <!-- margin: top right bottom left -->
-  <h4 class="card-header">Cadastro de Cliente</h4>
+  <h4 class="card-header">Cadastro de Funcionário</h4>
   <div class="card-body">
       <form>
 
           <div class="mb-3 d-flex" style="margin-top: 2vh;">
-              <div class="form-group" style="width: 70%; margin-right:2vw;">
+              <div class="form-group" style="width: 50%; margin-right:2vw;">
                   <span class="p-float-label">
-                      <input id="nome" name="nome" type="text" class="form-control" pInputText [(ngModel)]="obj.nome" required />
-                      <label for="nome">Nome:</label>
+                      <input id="login" name="login" type="text" class="form-control" pInputText [(ngModel)]="obj.login" required />
+                      <label for="login">Login:</label>
                   </span>
+              </div>
+              <div class="form-group" style="width: 20%; margin-right:2vw;">
+                <span class="p-float-label">
+                    <input id="senha" name="senha" type="text" class="form-control" pInputText [(ngModel)]="obj.senha" required />
+                    <label for="senha">Senha:</label>
+                </span>
               </div>
               <div class="form-group" style="width: 30%;">
                   <span class="p-float-label">
-                      <input type="text" id="telefone" name="telefone" class="form-control" pInputText [(ngModel)]="obj.telefone" required />
-                      <label for="telefone">Telefone:</label>
+                      <input type="text" id="fone" name="fone" class="form-control" pInputText [(ngModel)]="obj.fone" required />
+                      <label for="fone">Telefone:</label>
                   </span>
               </div>
           </div>
@@ -27,8 +35,8 @@
               </div>
               <div class="form-group" style="width: 30%;">
                   <span class="p-float-label">
-                    <input id="uf" name="uf" type="text" class="form-control" pInputText [(ngModel)]="obj.uf" required />
-                    <label for="uf">UF:</label>
+                    <input id="comissao" name="comissao" type="text" class="form-control" pInputText [(ngModel)]="obj.comissao" required />
+                    <label for="comissao">Comissão:</label>
                   </span>
               </div>
           </div>
@@ -37,7 +45,7 @@
               <button pButton pRipple type="button" (click)="adicionar()" class="p-button p-button-primary" >
                 Cadastrar
               </button>
-              <button pButton pRipple type="button" routerLink="/cliente" class="p-button p-button-danger" style="margin-left: 2vw;">
+              <button pButton pRipple type="button" routerLink="/funcionario" class="p-button p-button-danger" style="margin-left: 2vw;">
                 Retornar
               </button>
           </div>

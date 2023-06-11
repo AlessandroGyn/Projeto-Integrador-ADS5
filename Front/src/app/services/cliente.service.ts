@@ -48,7 +48,7 @@ export class ClienteService {
     return this.http.get<Cliente[]>(urlConsulta)
       .pipe(
         map((clientes: Cliente[]) => {
-          console.log('Lista de clientes:', clientes);
+          //console.log('Lista de clientes:', clientes);
           return clientes.some(cliente => this.compararCampos(cliente, campos));
       })
     );

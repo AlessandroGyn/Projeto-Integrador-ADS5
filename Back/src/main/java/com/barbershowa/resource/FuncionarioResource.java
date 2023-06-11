@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.barbershowa.model.Funcionario;
+import com.barbershowa.repository.AgendamentoRepository;
 import com.barbershowa.repository.FuncionarioRepository;
 import java.net.URI;
 import java.util.List;
@@ -20,6 +21,9 @@ public class FuncionarioResource {
 	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
+	
+	@Autowired
+	private AgendamentoRepository agendamentoRepository;
 	
 	@GetMapping
 	public List<Funcionario> list() {
@@ -58,6 +62,12 @@ public class FuncionarioResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Integer	id) {
-		funcionarioRepository.deleteById(id);
+		Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
+	    if (funcionario.isPresent()) {
+	        // Antes de excluir o funcionário, atualize os agendamentos relacionados, troca para funcionario id=3
+	        agendamentoRepository.updateFuncionarioIdByFuncionarioId(3, id);
+	        // Excluir o funcionário
+	        funcionarioRepository.deleteById(id);
+	    }
 	}
 }

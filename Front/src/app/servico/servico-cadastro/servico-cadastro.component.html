@@ -1,0 +1,50 @@
+<h1 class="page-title">SERVIÇOS - CADASTRO</h1>
+<hr>
+<div class="card" style="margin: 3vh 10vw 5vh 10vw;"> <!-- margin: top right bottom left -->
+  <h4 class="card-header">Cadastro de Serviço</h4>
+  <div class="card-body">
+      <form>
+
+          <div class="mb-3 d-flex" style="margin-top: 2vh;">
+              <div class="form-group" style="width: 70%; margin-right:2%;">
+                  <span class="p-float-label">
+                      <input id="nome" name="nome" type="text" class="form-control" pInputText [(ngModel)]="obj.nome" required />
+                      <label for="nome">Nome:</label>
+                  </span>
+              </div>
+              <div class="form-group" style="width: 13%; margin-right:2%;">
+                <span class="p-float-label">
+                    <input id="precoCusto" name="precoCusto" type="number" class="form-control" pInputText [(ngModel)]="obj.precoCusto" required />
+                    <label for="precoCusto">Preço de Custo:</label>
+                </span>
+              </div>
+              <div class="form-group" style="width: 13%;">
+                  <span class="p-float-label">
+                      <input type="number" id="precoVenda" name="precoVenda" class="form-control" pInputText [(ngModel)]="obj.precoVenda" required />
+                      <label for="precoVenda">Preço de Venda:</label>
+                  </span>
+              </div>
+          </div>
+
+          <div class="mb-3 d-flex">
+            <div class="form-group" style="width: 100%; ">
+              <span class="p-float-label">
+                  <input id="descricao" name="descricao" type="text" class="form-control" pInputText [(ngModel)]="obj.descricao" required />
+                  <label for="descricao">Descricao:</label>
+              </span>
+            </div>
+          </div>
+
+          <div>
+              <button pButton pRipple type="button" (click)="adicionar()" class="p-button p-button-primary" >
+                Cadastrar
+              </button>
+              <button pButton pRipple type="button" routerLink="/servico" class="p-button p-button-danger" style="margin-left: 2vw;">
+                Retornar
+              </button>
+          </div>
+
+      </form>
+      <p-messages [value]="msgs"></p-messages>
+  </div>
+</div>

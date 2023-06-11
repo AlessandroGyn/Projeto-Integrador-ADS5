@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AgendamentoEdicaoComponent } from '@app/agendamento-edicao/agendamento-edicao.component';
 import { Agendamento } from '@app/models/agendamento.model';
 import { Funcionario } from '@app/models/funcionario.model';
 import { AgendamentoService } from '@app/services/agendamento.service';
@@ -36,9 +35,9 @@ export class AgendamentoComponent implements OnInit {
 
       // Obtenha os dados do funcionário a partir do ID
       const funcionarios: Funcionario[] = []; // Obtenha a lista de funcionários do serviço ou de outra fonte de dados
-      const dialogRef = this.dialog.open(AgendamentoEdicaoComponent, {
+      /*const dialogRef = this.dialog.open(AgendamentoEdicaoComponent, {
         data: { agendamento, funcionarios },
-      });
+      });*/
 
       /*
       this.agendamentoService.obterFuncionario(agendamento.respagendamento).subscribe(

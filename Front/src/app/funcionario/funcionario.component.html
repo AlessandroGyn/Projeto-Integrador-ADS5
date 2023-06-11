@@ -1,1 +1,105 @@
-<p>funcionario works!</p>
+<h1 class="page-title">FUNCIONÁRIOS</h1>
+<hr>
+<button pButton pRipple type="button" routerLink="/funcionario-cadastro" label="Cadastrar Funcionário" class="p-button p-button-primary btnCadastrarFuncionario" ></button>
+<hr>
+<p-messages [value]="msgs"></p-messages>
+<div class="table-container">
+  <p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+          <th>Login</th>
+          <th>Senha</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Comissão</th>
+          <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-funcionario >
+      <tr>
+        <td>
+          <ng-container *ngIf="!funcionario.editMode; else loginEditField">
+            {{funcionario.login}}
+          </ng-container>
+          <ng-template #loginEditField>
+            <input type="text" [(ngModel)]="funcionario.login" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!funcionario.editMode; else senhaEditField">
+            {{funcionario.senha}}
+          </ng-container>
+          <ng-template #senhaEditField>
+            <input type="text" [(ngModel)]="funcionario.senha" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!funcionario.editMode; else foneEditField">
+            {{funcionario.fone}}
+          </ng-container>
+          <ng-template #foneEditField>
+            <input type="text" [(ngModel)]="funcionario.fone" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!funcionario.editMode; else emailEditField">
+            {{funcionario.email}}
+          </ng-container>
+          <ng-template #emailEditField>
+            <input type="text" [(ngModel)]="funcionario.email" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!funcionario.editMode; else comissaoEditField">
+            {{funcionario.comissao}}%
+          </ng-container>
+          <ng-template #comissaoEditField>
+            <input type="text" [(ngModel)]="funcionario.comissao" />
+          </ng-template>
+        </td>
+        <td>
+          <span class="p-buttonset">
+            <!-- Botão para alterar -->
+            <button
+              *ngIf="!funcionario.editMode"
+              pButton
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-secondary"
+              (click)="alterar(funcionario)"
+            ></button>
+            <!-- Botão para excluir -->
+            <button
+              *ngIf="!funcionario.editMode"
+              (click)="openConfirmationDialog(funcionario)"
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+            ></button>
+            <!-- Botão para salvar -->
+            <button
+              *ngIf="funcionario.editMode"
+              pButton
+              type="button"
+              label="Salvar"
+              icon="pi pi-check"
+              class="p-button-rounded p-button-success"
+              (click)="salvar(funcionario)"
+            ></button>
+            <!-- Botão para cancelar -->
+            <button
+              *ngIf="funcionario.editMode"
+              pButton
+              type="button"
+              label="Cancelar"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger"
+              (click)="cancelar(funcionario)"
+            ></button>
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

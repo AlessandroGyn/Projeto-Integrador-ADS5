@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Funcionario } from '@app/models/funcionario.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-const url = 'http://localhost:8080/funcionario';
+const url = 'http://localhost:8080/funcionarios';
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
@@ -36,5 +37,28 @@ export class FuncionarioService {
   excluir (id: number): Observable<Funcionario> {
       const urlLocal = `${url}/${id}`;
       return this.http.delete<Funcionario>(urlLocal, httpOptions);
+  }
+
+  // o método consultarPorCampos() é usado para pegar todos os funcionários do
+  // banco de dados e comparar com o funcionário que esta sendo gravado no banco
+  // se já existir um funcionário com todos os dados iguais = não gravar
+  // caso contrário = gravar
+  consultarPorCampos(campos: any): Observable<boolean> {
+    const urlConsulta = `${url}?login=${campos.login}&senha=${campos.senha}&email=${campos.email}&fone=${campos.fone}&comissao=${campos.comissao}`;
+    return this.http.get<Funcionario[]>(urlConsulta).pipe(
+      map((funcionarios: Funcionario[]) => {
+        return funcionarios.some(funcionario => this.compararCampos(funcionario, campos));
+      })
+    );
+  }
+
+  compararCampos(funcionario: Funcionario, campos: any): boolean {
+    return (
+      funcionario.login === campos.login &&
+      funcionario.senha === campos.senha &&
+      funcionario.email === campos.email &&
+      funcionario.fone === campos.fone &&
+      funcionario.comissao === campos.comissao
+    );
   }
 }
