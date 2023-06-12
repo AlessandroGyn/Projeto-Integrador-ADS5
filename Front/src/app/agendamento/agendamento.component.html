@@ -1,37 +1,151 @@
-<div *ngIf="!editMode">
-  <p-table [value]="agendamentos" [tableStyle]="{'min-width': '50rem'}">
+<h1 class="page-title">AGENDAMENTOS</h1>
+<hr>
+<button pButton pRipple type="button" routerLink="/agendamento-cadastro" label="Cadastrar Agendamento" class="p-button p-button-secondary btnCadastrarAgendamento" ></button>
+<hr>
+<p-messages [value]="msgs"></p-messages>
+<div class="table-container">
+  <p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header">
         <tr>
-          <th>Data</th>
-          <th>Hora</th>
-          <th>Nome do Serviço</th>
-          <th>Nome do Cliente</th>
-          <th>Status do Agendamento</th>
-          <th>Observação do Agendamento</th>
-          <th>Login do Funcionário</th>
+          <th style="width: auto;">Data</th>
+          <th style="width: auto;">Hora</th>
+          <th>Serviço</th>
+          <th>Cliente</th>
+          <th>Status</th>
+          <th>Observação</th>
+          <th>Funcionário</th>
+          <th>Ações</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-agendamento>
-        <tr >
-            <td>{{agendamento.datas | date:'dd/MM/yyyy'}}</td>
-            <td>{{agendamento.hora | date:'HH:mm'}}</td>
-            <td>{{agendamento.servico.nome}}</td>
-            <td>{{agendamento.cliente.nome}}</td>
-            <td>{{agendamento.status}}</td>
-            <td>{{agendamento.observacao}}</td>
-            <td>{{agendamento.respAgendamento.login}}</td>
-            <td>
-              <button (click)="editarAgendamento(agendamento)" pButton icon="pi pi-pencil" class="p-button-rounded p-button-secondary">Editar</button>
-              <!--<button pButton type="button" icon="pi pi-pencil" (click)="openEditDialog(agendamento)">Editar</button>-->
-              <!--<button (click)="editarAgendamento(agendamento)">Editar</button>  Botão para editar -->
-              <button (click)="excluirAgendamento(agendamento)">Excluir</button> <!-- Botão para excluir -->
-            </td>
-        </tr>
+    <ng-template pTemplate="body" let-agendamento >
+      <tr>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else datasEditField">
+            {{agendamento.datas | date:'dd/MM/yyyy'}}
+          </ng-container>
+          <ng-template #datasEditField>
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="agendamento.datas"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              [readonlyInput]="!agendamento.editMode"
+              [defaultDate]="agendamento.datas"
+            ></p-calendar>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else horaEditField">
+            {{agendamento.hora | date:'HH:mm'}}
+          </ng-container>
+          <ng-template #horaEditField>
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="agendamento.hora"
+              [showIcon]="true"
+              [timeOnly]="true"
+              hourFormat="24"
+              [readonlyInput]="!agendamento.editMode"
+              [defaultDate]="agendamento.hora"
+            ></p-calendar>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else servicoEditField">
+            {{agendamento.servico.nome}}
+          </ng-container>
+          <ng-template #servicoEditField>
+            <select [(ngModel)]="agendamento.servico" (ngModelChange)="onServicoChange($event)" style="width: 250px;">
+              <option *ngFor="let servico of servicos" [ngValue]="servico">{{servico.nome}}</option>
+            </select>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else clienteEditField">
+            {{agendamento.cliente.nome}}
+          </ng-container>
+          <ng-template #clienteEditField>
+            <select [(ngModel)]="agendamento.cliente" (ngModelChange)="onClienteChange($event)">
+              <option *ngFor="let cliente of clientes" [ngValue]="cliente">{{cliente.nome}}</option>
+            </select>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else statusEditField">
+            {{agendamento.status}}
+          </ng-container>
+          <ng-template #statusEditField>
+            <select [(ngModel)]="agendamento.status">
+              <option value="Aberto">Aberto</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="Confirmado">Confirmado</option>
+            </select>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else observacaoEditField">
+            {{agendamento.observacao}}
+          </ng-container>
+          <ng-template #observacaoEditField>
+            <input type="text" [(ngModel)]="agendamento.observacao" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!agendamento.editMode; else respAgendamentoEditField">
+            {{agendamento.respAgendamento.login}}
+          </ng-container>
+          <ng-template #respAgendamentoEditField>
+            <select [(ngModel)]="agendamento.respAgendamento" (ngModelChange)="onFuncionarioChange($event)">
+              <option *ngFor="let funcionario of funcionarios" [ngValue]="funcionario">{{funcionario.login}}</option>
+            </select>
+          </ng-template>
+        </td>
+
+        <td style="width: max-content;display:flex;">
+          <div >
+            <span class="p-buttonset">
+              <!-- Botão para alterar -->
+              <button
+                *ngIf="!agendamento.editMode"
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-secondary p-button-sm"
+                (click)="alterar(agendamento)"
+              ></button>
+              <!-- Botão para excluir -->
+              <button
+                *ngIf="!agendamento.editMode"
+                (click)="openConfirmationDialog(agendamento)"
+                pButton
+                type="button"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-sm"
+              ></button>
+              <!-- Botão para salvar -->
+              <button
+                *ngIf="agendamento.editMode"
+                pButton
+                type="button"
+                label="Salvar"
+                icon="pi pi-check"
+                class="p-button-rounded p-button-success p-button-sm"
+                (click)="salvar(agendamento)"
+              ></button>
+              <!-- Botão para cancelar -->
+              <button
+                *ngIf="agendamento.editMode"
+                pButton
+                type="button"
+                label="Cancelar"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger p-button-sm"
+                (click)="cancelar(agendamento)"
+              ></button>
+            </span>
+          </div>
+        </td>
+      </tr>
     </ng-template>
   </p-table>
-</div>
-
-<div *ngIf="editMode">
-  <!-- Componentes para edição do agendamento -->
-  <!-- <app-agendamento-edicao [agendamento]="agendamentoSelecionado"></app-agendamento-edicao> -->
 </div>

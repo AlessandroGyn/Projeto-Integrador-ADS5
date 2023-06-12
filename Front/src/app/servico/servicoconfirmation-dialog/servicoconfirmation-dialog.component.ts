@@ -11,7 +11,10 @@ export class ServicoConfirmationDialogComponent {
 
   @Input() servico: Servico = new Servico();
 
-  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
+  constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig
+  ) { }
 
   confirm(): void {
     this.ref.close(true);

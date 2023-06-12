@@ -27,7 +27,16 @@ export class ServicoComponent implements OnInit {
         this.api.consultar()
         .toPromise()
         .then((res: any) => {
-            this.lista = res.filter((servico: { id: number; }) => servico.id !== 29); // Remover o serviço com ID 29
+          this.lista = res.filter((servico: { id: number; }) => servico.id !== 29);
+        })
+        .catch((error: any) => {
+          console.log('Erro ao consultar serviços:', error);
+          // Exibir mensagem de erro ou realizar outra ação
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro ao consultar serviços',
+            detail: 'Ocorreu um erro ao consultar os serviços. Verifique a conexão com o servidor e tente novamente.'
+          });
         });
     }
 
@@ -118,6 +127,10 @@ export class ServicoComponent implements OnInit {
         servico.descricao !== undefined &&
         servico.precoCusto !== undefined &&
         servico.precoVenda !== undefined &&
+        servico.nome !== null &&
+        servico.descricao !== null &&
+        servico.precoCusto !== null &&
+        servico.precoVenda !== null &&
         servico.nome.trim() !== '' &&
         servico.descricao.trim() !== '' &&
         servico.precoCusto >= 0 &&

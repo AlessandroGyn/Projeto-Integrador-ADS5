@@ -1,1 +1,97 @@
-<p>agendamento-cadastro works!</p>
+<h1 class="page-title">AGENDAMENTO - CADASTRO</h1>
+<hr>
+<div class="card" style="margin: 3vh 10vw 5vh 10vw;"> <!-- margin: top right bottom left -->
+  <h4 class="card-header">Cadastro de Agendamentos</h4>
+  <div class="card-body">
+      <form>
+
+          <div class="mb-3 d-flex" style="margin-top: 2vh;">
+              <div class="form-group" style="width: 11%; margin-right:2%;">
+                  <label>Data:</label>
+                  <p-calendar
+                    appendTo="body"
+                    [(ngModel)]="obj.datas"
+                    dateFormat="dd/mm/yy"
+                    [showIcon]="true"
+                    [defaultDate]="obj.datas"
+                    name="datas"
+                  ></p-calendar>
+              </div>
+              <div class="form-group" style="width: 10%; margin-right:2%;">
+                  <label>Hora:</label>
+                  <p-calendar
+                    appendTo="body"
+                    [(ngModel)]="obj.hora"
+                    [showIcon]="true"
+                    [timeOnly]="true"
+                    hourFormat="24"
+                    [defaultDate]="obj.hora"
+                    name="hora"
+                  ></p-calendar>
+              </div>
+
+              <div class="form-group" style="width: 19%;">
+                  <label>Status:</label>
+                  <span>
+                      <select [(ngModel)]="obj.status" name="status">
+                        <option value="Aberto">Aberto</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="Confirmado">Confirmado</option>
+                      </select>
+                  </span>
+              </div>
+
+              <div class="form-group" style="width: 56%;">
+                <span class="p-float-label">
+                    <input type="text" id="observacao" name="observacao" class="form-control" pInputText [(ngModel)]="obj.observacao" required />
+                    <label>Observação:</label>
+                </span>
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <div class="mb-3 d-flex" style="margin-top: 2vh;">
+            <div class="form-group" style="width: 25%; margin-right:2%;">
+                <label >Cliente:</label>
+                <span >
+                    <select [(ngModel)]="obj.cliente" (ngModelChange)="onClienteChange($event)" name="cliente">
+                      <option *ngFor="let cliente of clientes" [ngValue]="cliente">{{cliente.nome}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="form-group" style="width: 15%; margin-right:2%;">
+                <label >Funcionario:</label>
+                <span >
+                    <select [(ngModel)]="obj.respAgendamento" (ngModelChange)="onFuncionarioChange($event)" name="respAgendamento">
+                      <option *ngFor="let funcionario of funcionarios" [ngValue]="funcionario">{{funcionario.login}}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="form-group" style="width: 60%;">
+              <label >Serviço:</label>
+              <span >
+                <select [(ngModel)]="obj.servico" (ngModelChange)="onServicoChange($event)" name="servico">
+                  <option *ngFor="let servico of servicos" [ngValue]="servico">{{servico.nome}}</option>
+                </select>
+              </span>
+            </div>
+        </div>
+
+          <div>
+              <button pButton pRipple type="button" (click)="adicionar()" class="p-button p-button-primary" >
+                Cadastrar
+              </button>
+              <button pButton pRipple type="button" routerLink="/agendamento" class="p-button p-button-danger" style="margin-left: 2vw;">
+                Retornar
+              </button>
+          </div>
+
+      </form>
+      <p-messages [value]="msgs"></p-messages>
+  </div>
+</div>

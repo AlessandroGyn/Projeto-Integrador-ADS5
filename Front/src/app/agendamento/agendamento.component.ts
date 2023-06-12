@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Agendamento } from '@app/models/agendamento.model';
-import { Funcionario } from '@app/models/funcionario.model';
 import { AgendamentoService } from '@app/services/agendamento.service';
+import { Message, MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
+import { AgendamentoConfirmationDialogComponent } from './agendamentoconfirmation-dialog/agendamentoconfirmation-dialog.component';
+import { Servico } from '@app/models/servico.model';
+import { Cliente } from '@app/models/cliente.model';
+import { Funcionario } from '@app/models/funcionario.model';
 
 @Component({
   selector: 'app-agendamento',
@@ -11,98 +16,282 @@ import { AgendamentoService } from '@app/services/agendamento.service';
 
 export class AgendamentoComponent implements OnInit {
 
-    editMode = false; // Flag para controlar o modo de edição
-    agendamentoSelecionado: Agendamento | null = null; // Agendamento selecionado para edição
-    agendamentos: Agendamento[] = [];
-    dialog: any;
-    constructor(private agendamentoService: AgendamentoService) {}
+  agendamentoParaExcluir: any; // Variável para armazenar o agendamento atual
 
-    ngOnInit() {
-      this.agendamentoService.getAgendamentos().subscribe(
-        (data) => {
-          this.agendamentos = data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+  lista: Agendamento[] = [];
+  obj: Agendamento = new Agendamento();
+  agendamento: Agendamento = new Agendamento();
+  mens = '';
+  msgs: Message[] = [];
+  servicos: Servico[] = [];
+  clientes: Cliente[] = [];
+  funcionarios: Funcionario[] = [];
 
-    editarAgendamento(agendamento: Agendamento) {
-      this.agendamentoSelecionado = agendamento;
-      this.editMode = true;
+  constructor(
+    private api: AgendamentoService,
+    private messageService: MessageService,
+    private dialogService: DialogService
+  ) { }
 
+  ngOnInit(): void {
+    this.carregarServicos();
+    this.carregarClientes();
+    this.carregarFuncionarios();
+    this.consultar();
+  }
 
-      // Obtenha os dados do funcionário a partir do ID
-      const funcionarios: Funcionario[] = []; // Obtenha a lista de funcionários do serviço ou de outra fonte de dados
-      /*const dialogRef = this.dialog.open(AgendamentoEdicaoComponent, {
-        data: { agendamento, funcionarios },
-      });*/
+  consultar() {
+      this.lista = []; // Limpar a lista existente
+      this.api.consultar()
+      .toPromise()
+      .then((res: any) => {
+        this.lista = res.map((item: any) => {
+          const agendamento = new Agendamento();
+          agendamento.id = item.id;
+          agendamento.datas = new Date(item.datas);
+          agendamento.hora = new Date(item.hora);
+          agendamento.status = item.status;
+          agendamento.observacao = item.observacao;
+          agendamento.cliente = item.cliente;
+          agendamento.respAgendamento = item.respAgendamento;
+          agendamento.servico = item.servico;
+          agendamento.editMode = false;
+          return agendamento;
+        });
 
-      /*
-      this.agendamentoService.obterFuncionario(agendamento.respagendamento).subscribe(
-        (funcionario) => {
-          this.agendamentoSelecionado.respagendamento = funcionario; // Preencha os outros dados do funcionário
-          this.agendamentoSelecionado.funcionarioId = funcionario.id; // Armazene o ID do funcionário
-        },
-        (error) => {
-          console.log('Erro ao obter dados do funcionário:', error);
-        }
-      );
-      */
-    }
+        // Exibir valores das propriedades datas e hora
+        //console.log('Valor de datas:', this.lista.map(item => item.datas));
+        //console.log('Valor de hora:', this.lista.map(item => item.hora));
 
+      })
+      .catch((error: any) => {
+        console.log('Erro ao consultar agendamentos:', error);
+        // Exibir mensagem de erro ou realizar outra ação
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro ao consultar agendamentos',
+          detail: 'Ocorreu um erro ao consultar os agendamentos. Verifique a conexão com o servidor e tente novamente.'
+        });
+      });
+  }
 
+  carregarServicos() {
+    this.api.getServicos()
+      .toPromise()
+      .then((res: any) => {
+        this.servicos = res;
+      })
+      .catch((error: any) => {
+        console.log('Erro ao carregar os serviços:', error);
+        // Exibir mensagem de erro ou realizar outra ação
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro ao carregar os serviços',
+          detail: 'Ocorreu um erro ao carregar os serviços. Verifique a conexão com o servidor e tente novamente.'
+        });
+      });
+  }
 
-    salvarEdicao() {
-      // Lógica para salvar as alterações do agendamento
-      if (this.agendamentoSelecionado) {
-        this.agendamentoService.alterar(this.agendamentoSelecionado.id, this.agendamentoSelecionado).subscribe(
-          (data) => {
-            // Sucesso na edição do agendamento
-            console.log('Agendamento editado com sucesso:', data);
-            this.editMode = false;
-            this.agendamentoSelecionado = null;
-            this.carregarAgendamentos();
-          },
-          (error) => {
-            // Erro na edição do agendamento
-            console.log('Erro ao editar o agendamento:', error);
-          }
-        );
+  carregarClientes() {
+    this.api.getClientes()
+      .toPromise()
+      .then((res: any) => {
+        this.clientes = res;
+      })
+      .catch((error: any) => {
+        console.log('Erro ao carregar os clientes:', error);
+        // Exibir mensagem de erro ou realizar outra ação
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro ao carregar os clientes',
+          detail: 'Ocorreu um erro ao carregar os clientes. Verifique a conexão com o servidor e tente novamente.'
+        });
+      });
+  }
+
+  carregarFuncionarios() {
+    this.api.getFuncionarios()
+      .toPromise()
+      .then((res: any) => {
+        this.funcionarios = res;
+      })
+      .catch((error: any) => {
+        console.log('Erro ao carregar os funcionários:', error);
+        // Exibir mensagem de erro ou realizar outra ação
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro ao carregar os funcionários',
+          detail: 'Ocorreu um erro ao carregar os funcionários. Verifique a conexão com o servidor e tente novamente.'
+        });
+      });
+  }
+
+  // EXCLUIR AGENDAMENTO
+  openConfirmationDialog(agendamento: Agendamento): void {
+    this.agendamentoParaExcluir = agendamento; // Armazene o agendamento atual na variável
+
+    const ref = this.dialogService.open(AgendamentoConfirmationDialogComponent, {
+      header: 'Confirmar Exclusão',
+      width: '400px',
+      contentStyle: { 'text-align': 'center' },
+      data: {
+        agendamento: this.agendamentoParaExcluir // Passe o agendamento para o componente de confirmação
+      },
+    });
+    ref.onClose.subscribe(result => {
+      if (result) {
+        // O usuário confirmou, então exclua o Agendamento
+        this.api.excluir(agendamento.id)
+          .toPromise()
+          .then(() => {
+            this.mens = "Agendamento excluído com sucesso!";
+            this.consultar();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Agendamento da dia: ' + agendamento.datas + ' horário: '+agendamento.hora,
+              detail: 'Foi excluído com sucesso!'
+            });
+          });
       }
+    });
+  }
+  // ENTRAR NO "MODO DE EDIÇÃO"
+  alterar(agendamento: Agendamento) {
+
+    const servicoEncontrado = this.servicos.find(servico => servico.id === agendamento.servico.id);
+    if (servicoEncontrado !== undefined) {
+      agendamento.servico = servicoEncontrado;
     }
 
-    cancelarEdicao() {
-      this.editMode = false;
-      this.agendamentoSelecionado = null;
+    const clienteEncontrado = this.clientes.find(cliente => cliente.id === agendamento.cliente.id);
+    if (clienteEncontrado !== undefined) {
+      agendamento.cliente = clienteEncontrado;
     }
 
-    excluirAgendamento(agendamento: Agendamento) {
-      if (confirm('Tem certeza que deseja excluir o agendamento?')) {
-        this.agendamentoService.excluir(agendamento.id).subscribe(
-          (data) => {
-            // Sucesso na exclusão do agendamento
-            console.log('Agendamento excluído com sucesso:', data);
-            this.carregarAgendamentos();
-          },
-          (error) => {
-            // Erro na exclusão do agendamento
-            console.log('Erro ao excluir o agendamento:', error);
-          }
-        );
+    const funcionarioEncontrado = this.funcionarios.find(funcionario => funcionario.id === agendamento.respAgendamento.id);
+    if (funcionarioEncontrado !== undefined) {
+      agendamento.respAgendamento = funcionarioEncontrado;
+    }
+
+    agendamento.status = agendamento.status;
+
+    agendamento.editMode = true; // Define o modo de edição para true
+  }
+  // SAIR DO "MODO DE EDIÇÃO"
+  cancelar(agendamento: Agendamento) {
+    agendamento.editMode = false; // Desativa o modo de edição
+    this.consultar(); // Recarrega a tabela de agendamentos
+  }
+  // SALVAR ALTERAÇÃO DE Agendamento
+  async salvar(agendamento: Agendamento) {
+    agendamento.editMode = false; // Desativa o modo de edição
+
+    if (!this.camposValidos(agendamento)) {
+      console.log('Campos inválidos');
+      // Exibir mensagem de erro ou realizar outra ação
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro ao alterar Agendamento',
+        detail: 'Ocorreu um erro ao alterar o Agendamento. Verifique os dados e tente novamente. Não pode ter campo vazio.'
+      });
+      return;
+    }
+
+    try {
+      const encontrado = await this.api.consultarPorCampos(agendamento).toPromise();
+
+      if (encontrado) {
+        console.log('Agendamento já existe');
+        // Exibir mensagem de erro informando que o Agendamento já existe
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro ao alterar Agendamento',
+          detail: 'O Agendamento já existe. Dia e horário já reservados.'
+        });
+      } else {
+        const response = await this.api.alterar(agendamento.id, agendamento).toPromise();
+        this.mens = 'Agendamento para dia: '+agendamento.datas+' horário: '+agendamento.hora + " alterado(a) com sucesso!";
+        // Exibir o dialog de sucesso
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Agendamento para dia: '+agendamento.datas+' horário: '+agendamento.hora,
+          detail: 'Agendamento foi alterado com sucesso!'
+        });
+        this.consultar(); // Recarrega a tabela de agendamentos
       }
+    } catch (error) {
+      console.log('Erro ao alterar Agendamento', error);
+      // Exibir mensagem de erro ou realizar outra ação
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro ao alterar Agendamento',
+        detail: 'Ocorreu um erro ao alterar o Agendamento. Verifique os dados e tente novamente.'
+      });
     }
+  }
 
-    carregarAgendamentos() {
-      this.agendamentoService.getAgendamentos().subscribe(
-        (data) => {
-          this.agendamentos = data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+  camposValidos(agendamento: Agendamento): boolean {
+    return (
+      agendamento.datas !== undefined &&
+      agendamento.hora !== undefined &&
+      agendamento.status !== undefined &&
+      agendamento.observacao !== undefined &&
+      agendamento.cliente !== undefined &&
+      agendamento.respAgendamento !== undefined &&
+      agendamento.servico !== undefined &&
+      agendamento.datas !== null &&
+      agendamento.hora !== null &&
+      agendamento.status !== null &&
+      agendamento.observacao !== null &&
+      agendamento.cliente !== null &&
+      agendamento.respAgendamento !== null &&
+      agendamento.servico !== null &&
+      agendamento.status.trim() !== '' &&
+      agendamento.observacao.trim() !== ''
+    );
+  }
+
+
+  onServicoChange(event: Servico | null) {
+    // Lógica para lidar com a alteração do valor do serviço
+    console.log('Novo valor do serviço:', event);
+
+    if (event !== null) {
+      // Atualizar a lista de serviços no agendamento
+      this.agendamento.servico = event;
+    } else {
+      // Serviço inválido, limpar o valor selecionado
+      this.agendamento.servico = new Servico(); // ou null, dependendo do seu caso
     }
+  }
+
+  onClienteChange(event: Cliente | null) {
+    // Lógica para lidar com a alteração do valor do cliente
+    console.log('Novo valor do cliente:', event);
+
+    if (event !== null) {
+      // Atualizar a lista de clientes no agendamento
+      this.agendamento.cliente = event;
+    } else {
+      // Cliente inválido, limpar o valor selecionado
+      this.agendamento.cliente = new Cliente(); // ou null, dependendo do seu caso
+    }
+  }
+
+  onFuncionarioChange(event: Funcionario | null) {
+    // Lógica para lidar com a alteração do valor do funcionário
+    console.log('Novo valor do funcionário:', event);
+
+    if (event !== null) {
+      // Atualizar a lista de funcionários no agendamento
+      this.agendamento.respAgendamento = event;
+    } else {
+      // Funcionário inválido, limpar o valor selecionado
+      this.agendamento.respAgendamento = new Funcionario(); // ou null, dependendo do seu caso
+    }
+  }
+
+
+
 
 }

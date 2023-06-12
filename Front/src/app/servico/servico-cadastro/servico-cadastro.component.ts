@@ -15,7 +15,10 @@ export class ServicoCadastroComponent {
   mens = '';
   msgs: Message[] = [];
 
-  constructor(private api: ServicoService, private messageService: MessageService) { }
+  constructor(
+    private api: ServicoService,
+    private messageService: MessageService
+  ) { }
 
   async adicionar() {
     if (this.camposValidos()) {

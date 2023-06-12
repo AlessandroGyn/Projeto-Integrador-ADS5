@@ -1,0 +1,52 @@
+{
+  "primeng": {
+    "calendar": {
+      "today": "Hoje",
+      "clear": "Limpar",
+      "prevMonth": "Mês anterior",
+      "nextMonth": "Próximo mês",
+      "prevYear": "Ano anterior",
+      "nextYear": "Próximo ano",
+      "prevDecade": "Década anterior",
+      "nextDecade": "Próxima década",
+      "prevCentury": "Século anterior",
+      "nextCentury": "Próximo século",
+      "dayNames": ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+      "dayNamesShort": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+      "dayNamesMin": ["Do", "Se", "Te", "Qua", "Qui", "Se", "Sa"],
+      "monthNames": [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+      ],
+      "monthNamesShort": [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez"
+      ],
+      "todayBtnLabel": "Hoje",
+      "closeBtnLabel": "Fechar",
+      "firstDayOfWeek": 0,
+      "dateFormat": "dd/mm/yy",
+      "weekHeader": "Sm"
+    }
+  }
+}

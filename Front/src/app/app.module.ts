@@ -37,8 +37,10 @@ import { FuncionarioCadastroComponent } from './funcionario/funcionario-cadastro
 import { FuncionarioConfirmationDialogComponent } from './funcionario/confirmation-dialog/confirmation-dialog.component';
 import { ServicoConfirmationDialogComponent } from './servico/servicoconfirmation-dialog/servicoconfirmation-dialog.component';
 import { ServicoCadastroComponent } from './servico/servico-cadastro/servico-cadastro.component';
-import { AgendamentoconfirmationDialogComponent } from './agendamento/agendamentoconfirmation-dialog/agendamentoconfirmation-dialog.component';
+import { AgendamentoConfirmationDialogComponent } from './agendamento/agendamentoconfirmation-dialog/agendamentoconfirmation-dialog.component';
 import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro/agendamento-cadastro.component';
+import { CalendarModule } from 'primeng/calendar';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
     imports: [
@@ -54,7 +56,8 @@ import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro
         MessageModule,
         BrowserAnimationsModule,
         AccordionModule,
-        CommonModule
+        CommonModule,
+        CalendarModule
     ],
     declarations: [
         AppComponent,
@@ -71,7 +74,7 @@ import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro
         FuncionarioConfirmationDialogComponent,
         ServicoConfirmationDialogComponent,
         ServicoCadastroComponent,
-        AgendamentoconfirmationDialogComponent,
+        AgendamentoConfirmationDialogComponent,
         AgendamentoCadastroComponent
 
     ],
@@ -86,7 +89,8 @@ import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro
         OrdemservicoService,
         ServicoService,
         MessageService,
-        DialogService
+        DialogService,
+        DropdownModule
     ],
     bootstrap: [AppComponent]
 })

@@ -113,6 +113,10 @@ export class ClienteComponent implements OnInit {
         cliente.telefone !== undefined &&
         cliente.email !== undefined &&
         cliente.uf !== undefined &&
+        cliente.nome !== null &&
+        cliente.telefone !== null &&
+        cliente.email !== null &&
+        cliente.uf !== null &&
         cliente.nome.trim() !== '' &&
         cliente.telefone.trim() !== '' &&
         cliente.email.trim() !== '' &&

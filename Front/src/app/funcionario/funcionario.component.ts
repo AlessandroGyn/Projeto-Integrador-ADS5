@@ -106,6 +106,11 @@ export class FuncionarioComponent implements OnInit {
         funcionario.email !== undefined &&
         funcionario.fone !== undefined &&
         funcionario.comissao !== undefined &&
+        funcionario.login !== null &&
+        funcionario.senha !== null &&
+        funcionario.email !== null &&
+        funcionario.fone !== null &&
+        funcionario.comissao !== null &&
         funcionario.login.trim() !== '' &&
         funcionario.senha.trim() !== '' &&
         funcionario.email.trim() !== '' &&

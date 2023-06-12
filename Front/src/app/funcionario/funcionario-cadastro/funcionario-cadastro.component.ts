@@ -63,6 +63,11 @@ export class FuncionarioCadastroComponent {
       this.obj.email !== undefined &&
       this.obj.fone !== undefined &&
       this.obj.comissao !== undefined &&
+      this.obj.login !== null &&
+      this.obj.senha !== null &&
+      this.obj.email !== null &&
+      this.obj.fone !== null &&
+      this.obj.comissao !== null &&
       this.obj.login.trim() !== '' &&
       this.obj.senha.trim() !== '' &&
       this.obj.email.trim() !== '' &&

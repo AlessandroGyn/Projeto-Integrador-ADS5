@@ -62,6 +62,10 @@ export class ClienteCadastroComponent {
       this.obj.telefone !== undefined &&
       this.obj.email !== undefined &&
       this.obj.uf !== undefined &&
+      this.obj.nome !== null &&
+      this.obj.telefone !== null &&
+      this.obj.email !== null &&
+      this.obj.uf !== null &&
       this.obj.nome.trim() !== '' &&
       this.obj.telefone.trim() !== '' &&
       this.obj.email.trim() !== '' &&
