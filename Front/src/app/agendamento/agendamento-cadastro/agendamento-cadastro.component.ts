@@ -31,7 +31,6 @@ export class AgendamentoCadastroComponent implements OnInit {
     this.carregarServicos();
     this.carregarClientes();
     this.carregarFuncionarios();
-
   }
 
   carregarServicos() {
@@ -118,6 +117,19 @@ export class AgendamentoCadastroComponent implements OnInit {
           });
         } else {
           try {
+            const dataAtual = new Date(); // Obtém a data atual
+            this.obj.datas = new Date(this.obj.datas);
+            // Verifica se a data do agendamento é anterior à data atual
+            if (this.obj.datas < dataAtual) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erro ao alterar Agendamento',
+                detail: 'A data do agendamento não pode ser antiga.'
+              });
+              //this.obj = new Agendamento(); // Cria um novo objeto agendamento com a propriedade id definida como null ou undefined // Recarrega a tabela de agendamentos
+              return; // Se a data for anterior ao dia atual
+            }
+
             const agendamento = await this.api.adicionar(this.obj).toPromise();
             if (agendamento) {
               this.mens = "Agendamento foi adicionado(a) com sucesso!";
@@ -125,7 +137,7 @@ export class AgendamentoCadastroComponent implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
-                detail:  "${agendamento.datas | date:'dd/MM/yyyy'}  foi adicionado(a) com sucesso!"
+                detail:  "Agendamento  foi adicionado(a) com sucesso!"
               });
               console.log('Limpar campos');
               // Limpar os campos

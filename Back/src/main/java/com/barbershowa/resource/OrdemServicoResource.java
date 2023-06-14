@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/ordemservico")
+@RequestMapping("/ordemservicos")
 public class OrdemServicoResource {
 	
 	@Autowired
@@ -28,13 +28,10 @@ public class OrdemServicoResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Integer id) {
-		Optional<OrdemServico> opF = ordemServicoRepository.findById(id);
-		if (opF.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		} else {
-			return ResponseEntity.ok(opF);
-		}
+	    Optional<OrdemServico> opF = ordemServicoRepository.findById(id);
+	    return opF.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
+
 	
 	@PostMapping
 	public ResponseEntity<OrdemServico> create(@Valid @RequestBody OrdemServico ordemServico, HttpServletResponse response) { 

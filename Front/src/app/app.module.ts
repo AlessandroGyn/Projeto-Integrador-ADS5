@@ -4,22 +4,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // used to create fake backend
-import { fakeBackendProvider } from './_helpers';
+//import { fakeBackendProvider } from './_helpers';
 
 import { AppRoutingModule } from './app-routing.module';
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+//import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
-import { AlertComponent } from './_components';
-import { HomeComponent } from './home';
+//import { AlertComponent } from './_components';
+//import { HomeComponent } from './home';
 import { AgendamentoComponent } from './agendamento/agendamento.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { FuncionarioComponent } from './funcionario/funcionario.component';
-import { OrdemservicoComponent } from './ordemservico/ordemservico.component';
+import { OrdemServicoComponent } from './ordemservico/ordemservico.component';
 import { ServicoComponent } from './servico/servico.component';
 import { AgendamentoService } from './services/agendamento.service';
 import { ClienteService } from './services/cliente.service';
 import { FuncionarioService } from './services/funcionario.service';
-import { OrdemservicoService } from './services/ordemservico.service';
+import { OrdemServicoService } from './services/ordemservico.service';
 import { ServicoService } from './services/servico.service';
 import { TableModule } from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
@@ -41,6 +41,8 @@ import { AgendamentoConfirmationDialogComponent } from './agendamento/agendament
 import { AgendamentoCadastroComponent } from './agendamento/agendamento-cadastro/agendamento-cadastro.component';
 import { CalendarModule } from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
+import { OrdemServicoConfirmationDialogComponent } from './ordemservico/ordemservicoconfirmation-dialog/ordemservicoconfirmation-dialog.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     imports: [
@@ -58,15 +60,14 @@ import {DropdownModule} from 'primeng/dropdown';
         AccordionModule,
         CommonModule,
         CalendarModule
+
     ],
     declarations: [
         AppComponent,
-        AlertComponent,
-        HomeComponent,
         AgendamentoComponent,
         ClienteComponent,
         FuncionarioComponent,
-        OrdemservicoComponent,
+        OrdemServicoComponent,
         ServicoComponent,
         ClienteCadastroComponent,
         ConfirmationDialogComponent,
@@ -75,22 +76,22 @@ import {DropdownModule} from 'primeng/dropdown';
         ServicoConfirmationDialogComponent,
         ServicoCadastroComponent,
         AgendamentoConfirmationDialogComponent,
-        AgendamentoCadastroComponent
+        AgendamentoCadastroComponent,
+        OrdemServicoConfirmationDialogComponent,
+        LoginComponent
+
 
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        // provider used to create fake backend
-        fakeBackendProvider,
         AgendamentoService,
         ClienteService,
         FuncionarioService,
-        OrdemservicoService,
+        OrdemServicoService,
         ServicoService,
         MessageService,
         DialogService,
         DropdownModule
+
     ],
     bootstrap: [AppComponent]
 })

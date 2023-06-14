@@ -64,7 +64,8 @@ export class AgendamentoService {
 
     const datas = campos.datas.toISOString(); // Converte para o formato ISO8601
     const hora = campos.hora.toISOString(); // Converte para o formato ISO8601
-    const urlConsulta = `${url}?datas=${datas}&hora=${hora}`;
+    const cliente = encodeURIComponent(campos.cliente); // Codifica o valor do cliente para ser incluído na URL
+    const urlConsulta = `${url}?datas=${datas}&hora=${hora}&cliente=${cliente}`;
     return this.http.get<Agendamento[]>(urlConsulta).pipe(
       map((agendamentos: Agendamento[]) => {
         return agendamentos.some(agendamento => this.compararCampos(agendamento, campos));
@@ -74,10 +75,35 @@ export class AgendamentoService {
   }
 
   compararCampos(agendamento: Agendamento, campos: any): boolean {
+
+    agendamento.datas = new Date(agendamento.datas);
+    agendamento.hora = new Date(agendamento.hora);
+
+    // abaixo junta na mesma variavel o valor "dia + hora"
+    const agendamentoNovoWeb = new Date(campos.datas);  // vem da pagina web
+    agendamentoNovoWeb.setHours(campos.hora.getHours());
+    agendamentoNovoWeb.setMinutes(campos.hora.getMinutes());
+    agendamentoNovoWeb.setSeconds(campos.hora.getSeconds());
+
+    const agendamentoBD = new Date(agendamento.datas); // vem do banco
+    agendamentoBD.setHours(agendamento.hora.getHours());
+    agendamentoBD.setMinutes(agendamento.hora.getMinutes());
+    agendamentoBD.setSeconds(agendamento.hora.getSeconds());
+
+    const inicioAgendamentoBD = agendamentoBD.getTime(); // horário início agendamento gravado no BD
+    const fimAgendamentoBD = agendamentoBD.getTime() + 30 * 60 * 1000; // Adiciona 30 minutos ao agendamentoBD para ter o final dele
+
     return (
-      agendamento.datas.getTime() === campos.datas.getTime() &&
-      agendamento.hora.getTime() === campos.hora.getTime()
+      agendamento.cliente === campos.cliente &&
+      (agendamentoNovoWeb.getTime() >= inicioAgendamentoBD &&
+      agendamentoNovoWeb.getTime() <= fimAgendamentoBD )
     );
+    /*
+    retornará true se houver um agendamento existente
+    com a mesma data e um horário que esteja dentro do
+    intervalo de 30 minutos após o horário do agendamento existente,
+    e o mesmo cliente
+    */
   }
 
 

@@ -2,6 +2,8 @@ package com.barbershowa.model;
 import java.util.Date;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "agendamento")
 public class Agendamento {
@@ -16,7 +18,8 @@ public class Agendamento {
     private String observacao;
     
     @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID_PK") //id da ordem de serviço
+    @JoinColumn(name = "id") 
+    @JsonBackReference
     private OrdemServico ordemServico;
     
     @ManyToOne

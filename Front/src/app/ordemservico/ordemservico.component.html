@@ -1,1 +1,176 @@
-<p>ordemservico works!</p>
+<h1 class="page-title">ORDEM DE SERVIÇO</h1>
+<hr>
+<p-messages [value]="msgs"></p-messages>
+<div class="table-container">
+  <p-table [value]="lista" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+          <th style="width: auto;">Começo</th>
+          <th style="width: auto;">Término</th>
+          <th>Status</th>
+          <th>Agendamento</th>
+          <th>Serviço</th>
+          <th>Valor</th>
+          <th>Funcionário-OS</th>
+          <th>Funcionário-Exec</th>
+          <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-ordemServico >
+      <tr>
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else datahorainicioEditField">
+            {{ordemServico.datahorainicio }}
+          </ng-container>
+          <ng-template #datahorainicioEditField>
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="ordemServico.datahorainicio"
+
+              [showIcon]="true"
+              [readonlyInput]="!ordemServico.editMode"
+              [defaultDate]="ordemServico.datahorainicio"
+              [showTime]="true"
+              [showSeconds]="false"
+            ></p-calendar>
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else datahoraterminoEditField">
+            {{ordemServico.datahoratermino | date:'dd/MM/yy HH:mm'}}
+          </ng-container>
+          <ng-template #datahoraterminoEditField>
+            <p-calendar
+              appendTo="body"
+              [(ngModel)]="ordemServico.datahoratermino"
+              dateFormat="dd/MM/yy HH:mm"
+              [showIcon]="true"
+              [readonlyInput]="!ordemServico.editMode"
+              [defaultDate]="ordemServico.datahoratermino"
+              [showTime]="true"
+              [showSeconds]="false"
+            ></p-calendar>
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else statusEditField">
+            {{ordemServico.status}}
+          </ng-container>
+          <ng-template #statusEditField>
+            <select [(ngModel)]="ordemServico.status">
+              <option value="Aberto">Aberto</option>
+              <option value="Em-Execucao">Em Execução</option>
+              <option value="Concluido">Concluído</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else agendamentoEditField">
+            <ng-container *ngIf="ordemServico.agendamento">
+              {{'Cliente: ' + ordemServico.agendamento.cliente?.nome + ' Dia: ' + ordemServico.agendamento.datas + ' Horário: ' + ordemServico.agendamento.hora}}
+            </ng-container>
+          </ng-container>
+          <ng-template #agendamentoEditField>
+            <select [(ngModel)]="ordemServico.agendamento" (ngModelChange)="onAgendamentoChange($event)">
+              <option *ngFor="let agendamento of agendamentos" [ngValue]="agendamento">
+                Cliente: {{agendamento.cliente.nome}} Dia: {{agendamento.datas}} Horário: {{agendamento.hora}}
+              </option>
+            </select>
+          </ng-template>
+        </td>
+
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else servicoEditField">
+            {{ordemServico.servico.nome}}
+          </ng-container>
+          <ng-template #servicoEditField>
+            <select [(ngModel)]="ordemServico.servico" (ngModelChange)="onServicoChange($event)" style="width: 250px;">
+              <option *ngFor="let servico of servicos" [ngValue]="servico">{{servico.nome}}</option>
+            </select>
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else valorEditField">
+            {{ordemServico.valor}}
+          </ng-container>
+          <ng-template #valorEditField>
+            <input pInputText type="text" [(ngModel)]="ordemServico.valor" />
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else respOSEditField">
+            {{ordemServico.respOS.login}}
+          </ng-container>
+          <ng-template #respOSEditField>
+            <select [(ngModel)]="ordemServico.respOS" (ngModelChange)="onFuncionarioChange($event)">
+              <option *ngFor="let funcionario of funcionarios" [ngValue]="funcionario">{{funcionario.login}}</option>
+            </select>
+          </ng-template>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!ordemServico.editMode; else execServicoEditField">
+            {{ordemServico.execServico?.login}}
+          </ng-container>
+          <ng-template #execServicoEditField>
+            <select [(ngModel)]="ordemServico.execServico" (ngModelChange)="onFuncionarioChange($event)">
+              <option *ngFor="let funcionario of funcionarios" [ngValue]="funcionario">{{funcionario.login}}</option>
+            </select>
+          </ng-template>
+        </td>
+
+        <td style="width: max-content;display:flex;">
+          <div >
+            <span class="p-buttonset">
+              <!-- Botão para alterar -->
+              <button
+                *ngIf="!ordemServico.editMode"
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-secondary p-button-sm"
+                (click)="alterar(ordemServico)"
+              ></button>
+              <!-- Botão para excluir -->
+              <button
+                *ngIf="!ordemServico.editMode"
+                (click)="openConfirmationDialog(ordemServico)"
+                pButton
+                type="button"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-sm"
+              ></button>
+              <!-- Botão para salvar -->
+              <button
+                *ngIf="ordemServico.editMode"
+                pButton
+                type="button"
+                label="Salvar"
+                icon="pi pi-check"
+                class="p-button-rounded p-button-success p-button-sm"
+                (click)="salvar(ordemServico)"
+              ></button>
+              <!-- Botão para cancelar -->
+              <button
+                *ngIf="ordemServico.editMode"
+                pButton
+                type="button"
+                label="Cancelar"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger p-button-sm"
+                (click)="cancelar(ordemServico)"
+              ></button>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

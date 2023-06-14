@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Agendamento } from '@app/models/agendamento.model';
+import { Funcionario } from '@app/models/funcionario.model';
 import { Servico } from '@app/models/servico.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,6 +15,8 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ServicoService {
+
+  private apiUrl = 'http://localhost:8080'
 
   constructor(private http: HttpClient) { }
 
@@ -42,6 +46,17 @@ export class ServicoService {
       return this.http.delete<Servico>(urlLocal, httpOptions);
   }
 
+  getServicos(): Observable<Servico[]> {
+    return this.http.get<Servico[]>(`${this.apiUrl}/servicos`);
+  }
+
+  getFuncionarios(): Observable<Funcionario[]> {
+    return this.http.get<Funcionario[]>(`${this.apiUrl}/funcionarios`);
+  }
+
+  getAgendamentos(): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(`${this.apiUrl}/agendamentos`);
+  }
   // O método consultarPorCampos() é usado para pegar todos os serviços do
   // banco de dados e comparar com o serviço que esta sendo gravado no banco.
   // Se já existir um serviço com todos os dados iguais = não gravar

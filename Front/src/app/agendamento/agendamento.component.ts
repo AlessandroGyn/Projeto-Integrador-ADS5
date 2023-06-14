@@ -45,24 +45,32 @@ export class AgendamentoComponent implements OnInit {
       this.api.consultar()
       .toPromise()
       .then((res: any) => {
-        this.lista = res.map((item: any) => {
-          const agendamento = new Agendamento();
-          agendamento.id = item.id;
-          agendamento.datas = new Date(item.datas);
-          agendamento.hora = new Date(item.hora);
-          agendamento.status = item.status;
-          agendamento.observacao = item.observacao;
-          agendamento.cliente = item.cliente;
-          agendamento.respAgendamento = item.respAgendamento;
-          agendamento.servico = item.servico;
-          agendamento.editMode = false;
-          return agendamento;
-        });
+        const dataAtual = new Date(); // Obtém a data atual - com "dia + hora"
+        this.lista = res
+          .map((item: any) => {
+            const agendamento = new Agendamento();
+            agendamento.id = item.id;
+            agendamento.datas = new Date(item.datas);
+            agendamento.hora = new Date(item.hora);
+            agendamento.status = item.status;
+            agendamento.observacao = item.observacao;
+            agendamento.cliente = item.cliente;
+            agendamento.respAgendamento = item.respAgendamento;
+            agendamento.servico = item.servico;
+            agendamento.editMode = false;
 
-        // Exibir valores das propriedades datas e hora
-        //console.log('Valor de datas:', this.lista.map(item => item.datas));
-        //console.log('Valor de hora:', this.lista.map(item => item.hora));
+            // Atualizar agendamento.datas com agendamento.hora
+            agendamento.datas.setHours(agendamento.hora.getHours());
+            agendamento.datas.setMinutes(agendamento.hora.getMinutes());
+            agendamento.datas.setSeconds(agendamento.hora.getSeconds());
 
+            return agendamento;
+          })
+          .filter((agendamento: Agendamento) => agendamento.datas >= dataAtual);
+          // filter acima, retorna apenas se a data do agendamento (agendamento.datas) for igual ou posterior à dataAtual
+          // Exibir valores das propriedades datas e hora
+          //console.log('Valor de datas:', this.lista.map(item => item.datas));
+          //console.log('Valor de hora:', this.lista.map(item => item.hora));
       })
       .catch((error: any) => {
         console.log('Erro ao consultar agendamentos:', error);
@@ -148,7 +156,7 @@ export class AgendamentoComponent implements OnInit {
             this.consultar();
             this.messageService.add({
               severity: 'success',
-              summary: 'Agendamento da dia: ' + agendamento.datas + ' horário: '+agendamento.hora,
+              summary: 'Agendamento',
               detail: 'Foi excluído com sucesso!'
             });
           });
@@ -182,7 +190,7 @@ export class AgendamentoComponent implements OnInit {
     agendamento.editMode = false; // Desativa o modo de edição
     this.consultar(); // Recarrega a tabela de agendamentos
   }
-  // SALVAR ALTERAÇÃO DE Agendamento
+  // SALVAR ALTERAÇÃO DE AGENDAMENTO
   async salvar(agendamento: Agendamento) {
     agendamento.editMode = false; // Desativa o modo de edição
 
@@ -194,28 +202,42 @@ export class AgendamentoComponent implements OnInit {
         summary: 'Erro ao alterar Agendamento',
         detail: 'Ocorreu um erro ao alterar o Agendamento. Verifique os dados e tente novamente. Não pode ter campo vazio.'
       });
+      this.consultar(); // Recarrega a tabela de agendamentos
       return;
     }
 
     try {
       const encontrado = await this.api.consultarPorCampos(agendamento).toPromise();
-
       if (encontrado) {
         console.log('Agendamento já existe');
         // Exibir mensagem de erro informando que o Agendamento já existe
         this.messageService.add({
           severity: 'error',
           summary: 'Erro ao alterar Agendamento',
-          detail: 'O Agendamento já existe. Dia e horário já reservados.'
+          detail: 'O Agendamento já existe ou a data é antiga.'
         });
+        this.consultar(); // Recarrega a tabela de agendamentos
       } else {
+        const dataAtual = new Date(); // Obtém a data atual
+        agendamento.datas = new Date(agendamento.datas);
+        agendamento.hora = new Date(agendamento.hora);
+        // Verifica se a data do agendamento é anterior à data atual
+        if ( agendamento.hora.getTime() < dataAtual.getTime() ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro ao alterar Agendamento',
+            detail: 'A data do agendamento não pode ser antiga.'
+          });
+          this.consultar(); // Recarrega a tabela de agendamentos
+          return; // Se a data for anterior ao dia atual
+        }
         const response = await this.api.alterar(agendamento.id, agendamento).toPromise();
-        this.mens = 'Agendamento para dia: '+agendamento.datas+' horário: '+agendamento.hora + " alterado(a) com sucesso!";
+        this.mens = 'Agendamento alterado(a) com sucesso!';
         // Exibir o dialog de sucesso
         this.messageService.add({
           severity: 'success',
-          summary: 'Agendamento para dia: '+agendamento.datas+' horário: '+agendamento.hora,
-          detail: 'Agendamento foi alterado com sucesso!'
+          summary: 'Agendamento',
+          detail: 'Alterado com sucesso!'
         });
         this.consultar(); // Recarrega a tabela de agendamentos
       }

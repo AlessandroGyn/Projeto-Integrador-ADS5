@@ -1,7 +1,9 @@
 package com.barbershowa.model;
+import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "ordemservico")
@@ -13,48 +15,36 @@ public class OrdemServico {
     private Integer id;
 
     @Column(name = "datahorainicio")  // nome da coluna no BD
-    private Date dataHoraInicio;
+    private Timestamp  dataHoraInicio;
     
     @Column(name = "datahoratermino")
-    private Date dataHoraTermino;
+    private Timestamp  dataHoraTermino;
     
     private String status;
     private Float valor;
 
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "agendamento") // nome da coluna no BD
+    
+    @OneToOne(mappedBy = "ordemServico") // nome da classe no objeto Agendamento
+    @JsonManagedReference
     private Agendamento agendamento;
 
     @ManyToOne
     @JoinColumn(name = "servico")
     private Servico servico;
 
-    @JsonIgnore
+    
     @ManyToOne
     @JoinColumn(name = "respos")
     private Funcionario respOS;
 
-    @JsonIgnore
+    
     @ManyToOne
     @JoinColumn(name = "execservico")
     private Funcionario execServico;
 
     public OrdemServico() {}
     
-    public OrdemServico(Integer id, Date dataHoraInicio, Date dataHoraTermino, String status, Float valor,
-			Agendamento agendamento, Servico servico, Funcionario respOS, Funcionario execServico) {
-		super();
-		this.id = id;
-		this.dataHoraInicio = dataHoraInicio;
-		this.dataHoraTermino = dataHoraTermino;
-		this.status = status;
-		this.valor = valor;
-		this.agendamento = agendamento;
-		this.servico = servico;
-		this.respOS = respOS;
-		this.execServico = execServico;
-	}
+   
 
 	public Integer getId() {
 		return id;
@@ -64,21 +54,31 @@ public class OrdemServico {
 		this.id = id;
 	}
 
-	public Date getDataHoraInicio() {
+	
+
+	public Timestamp getDataHoraInicio() {
 		return dataHoraInicio;
 	}
 
-	public void setDataHoraInicio(Date dataHoraInicio) {
+
+
+	public void setDataHoraInicio(Timestamp dataHoraInicio) {
 		this.dataHoraInicio = dataHoraInicio;
 	}
 
-	public Date getDataHoraTermino() {
+
+
+	public Timestamp getDataHoraTermino() {
 		return dataHoraTermino;
 	}
 
-	public void setDataHoraTermino(Date dataHoraTermino) {
+
+
+	public void setDataHoraTermino(Timestamp dataHoraTermino) {
 		this.dataHoraTermino = dataHoraTermino;
 	}
+
+
 
 	public String getStatus() {
 		return status;

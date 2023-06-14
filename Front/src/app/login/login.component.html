@@ -1,0 +1,48 @@
+<div class="p-card">
+  <h4 class="p-card-header">Login</h4>
+  <div class="p-card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
+      <div class="p-field">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="p-inputtext"
+          [ngClass]="{ 'p-invalid': submitted && f.username.invalid }"
+        />
+        <div
+          *ngIf="submitted && f.username.invalid"
+          class="p-invalid-feedback"
+        >
+          <div *ngIf="f.username.errors?.required">Username is required</div>
+        </div>
+      </div>
+      <div class="p-field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="p-inputtext"
+          [ngClass]="{ 'p-invalid': submitted && f.password.invalid }"
+        />
+        <div
+          *ngIf="submitted && f.password.invalid"
+          class="p-invalid-feedback"
+        >
+          <div *ngIf="f.password.errors?.required">Password is required</div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        [disabled]="loading || form.invalid"
+        class="p-button p-component"
+      >
+        <span *ngIf="loading" class="p-progress-spinner"></span>
+        <span>Login</span>
+      </button>
+      <!--<a routerLink="../register" class="p-link">Register</a>-->
+    </form>
+  </div>
+</div>

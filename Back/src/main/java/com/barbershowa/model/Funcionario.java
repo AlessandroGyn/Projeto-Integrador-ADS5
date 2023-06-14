@@ -23,7 +23,7 @@ public class Funcionario  {
 
     @JsonIgnore
     @OneToOne(mappedBy = "respOS")
-    private OrdemServico ordemServico;
+    private OrdemServico respOS;
 
     @JsonIgnore
     @OneToOne(mappedBy = "execServico")
@@ -85,12 +85,13 @@ public class Funcionario  {
 		this.agendamentos = agendamentos;
 	}
 
-	public OrdemServico getOrdemServico() {
-		return ordemServico;
+	
+	public OrdemServico getRespOS() {
+		return respOS;
 	}
 
-	public void setOrdemServico(OrdemServico ordemServico) {
-		this.ordemServico = ordemServico;
+	public void setRespOS(OrdemServico respOS) {
+		this.respOS = respOS;
 	}
 
 	public OrdemServico getExecServico() {

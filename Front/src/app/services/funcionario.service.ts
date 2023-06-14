@@ -13,8 +13,15 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class FuncionarioService {
-
+  private apiUrl = 'http://localhost:8080/funcionarios';
   constructor(private http: HttpClient) { }
+
+  getFuncionarioByLogin(login: string) {
+    return this.http.get<Funcionario[]>(`${this.apiUrl}?login=${login}`).pipe(
+      map(funcionarios => funcionarios.find(funcionario => funcionario.login === login))
+    );
+  }
+
 
   consultar (): Observable<Funcionario[]> {
       return this.http.get<Funcionario[]>(url);
