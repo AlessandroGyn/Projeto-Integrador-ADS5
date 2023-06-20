@@ -13,15 +13,34 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class FuncionarioService {
-  private apiUrl = 'http://localhost:8080/funcionarios';
-  constructor(private http: HttpClient) { }
 
-  getFuncionarioByLogin(login: string) {
+  private funcionarios: Funcionario[] = [];
+  private apiUrl = 'http://localhost:8080/funcionarios';
+
+  constructor(private http: HttpClient) {
+    this.getFuncionarios().subscribe((funcionarios) => {
+      this.funcionarios = funcionarios;
+    });
+   }
+
+
+
+  /*getFuncionarioByLogin(login: string): Observable<Funcionario | undefined> {
     return this.http.get<Funcionario[]>(`${this.apiUrl}?login=${login}`).pipe(
-      map(funcionarios => funcionarios.find(funcionario => funcionario.login === login))
+      map(funcionarios => funcionarios.find(funcionario => funcionario.login === login)),
+      map(funcionario => funcionario !== undefined ? funcionario : undefined)
     );
+  }*/
+
+  getFuncionarios(): Observable<Funcionario[]> {
+    return this.http.get<Funcionario[]>(this.apiUrl);
   }
 
+
+
+  getFuncionarioByLogin(username: string): Funcionario | undefined {
+      return this.funcionarios.find(funcionario => funcionario.login === username);
+  }
 
   consultar (): Observable<Funcionario[]> {
       return this.http.get<Funcionario[]>(url);

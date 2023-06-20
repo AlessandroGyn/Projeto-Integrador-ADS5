@@ -27,12 +27,13 @@
         </td>
         <td>
           <ng-container *ngIf="!funcionario.editMode; else senhaEditField">
-            {{funcionario.senha}}
+            {{ funcionario.editMode ? funcionario.senha : '********' }}
           </ng-container>
           <ng-template #senhaEditField>
-            <input type="text" [(ngModel)]="funcionario.senha" />
+            <input type="password" [(ngModel)]="funcionario.senha" />
           </ng-template>
         </td>
+
         <td>
           <ng-container *ngIf="!funcionario.editMode; else foneEditField">
             {{funcionario.fone}}

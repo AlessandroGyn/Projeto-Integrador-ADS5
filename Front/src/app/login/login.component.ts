@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FuncionarioService } from '@app/services/funcionario.service';
-import { Message, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
-
-
+import { MessageService } from 'primeng/api';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +16,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private funcionarioService: FuncionarioService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -47,32 +44,22 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
 
-    // Aqui você pode adicionar a lógica para autenticação do usuário
-    // e redirecionamento para a página desejada após o login
-    this.funcionarioService.getFuncionarioByLogin(username).subscribe(
-      (funcionario) => {
-        if (funcionario && funcionario.login === username && funcionario.senha === password) {
-          console.log('logou')
-          // Login válido, faça o redirecionamento para a página desejada
-          //this.router.navigateByUrl('/agendamento');
-          this.router.navigate(['/agendamento']);
-          //this.router.navigate(['http://localhost:4200/agendamento']);
-        } else {
-          // Login inválido, exiba uma mensagem de erro
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro no login',
-            detail: 'Login ou senha inexistente.'
-          });
-        }
-        this.loading = false;
-      },
-      (error) => {
-        // Trate erros de requisição ou exiba uma mensagem de erro
-        console.error(error);
-        this.loading = false;
-      }
-    );
-
+    const success = this.authService.login(username, password);
+    if (success) {
+      console.log('logou');
+      // Login válido, faça o redirecionamento para a página desejada
+      this.router.navigate(['/agendamento']); // Ajuste na rota
+    } else {
+      // Login inválido, exiba uma mensagem de erro
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro no login',
+        detail: 'Login ou senha inválidos.'
+      });
+    }
+    this.loading = false;
   }
+
+
+
 }

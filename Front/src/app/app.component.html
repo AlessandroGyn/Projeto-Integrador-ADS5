@@ -1,19 +1,18 @@
-﻿<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark px-3">
-    <div class="navbar-nav">
-        <!--<a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>-->
-        <!--<a class="nav-item nav-link" routerLink="/agendamento" routerLinkActive="active">Agendamentos</a>-->
-        <a class="nav-item nav-link" routerLink="/agendamento" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Agendamentos</a>
-        <a class="nav-item nav-link" routerLink="/cliente" routerLinkActive="active">Clientes</a>
-        <a class="nav-item nav-link" routerLink="/ordemservico" routerLinkActive="active">Ordem de Serviços</a>
-        <a class="nav-item nav-link" routerLink="/servico" routerLinkActive="active">Serviços</a>
-        <a class="nav-item nav-link" routerLink="/funcionario" routerLinkActive="active">Funcionários</a>
-        <!--<a class="nav-item nav-link" routerLink="/account" routerLinkActive="active">Usuários</a> /users-->
-        <button class="btn btn-link nav-item nav-link" (click)="logout()">Sair</button>
-    </div>
+﻿
+<nav class="navbar navbar-expand navbar-dark bg-dark px-3" *ngIf="isAuthenticated">
+  <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="/agendamento" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Agendamentos</a>
+      <a class="nav-item nav-link" routerLink="/cliente" routerLinkActive="active">Clientes</a>
+      <a class="nav-item nav-link" routerLink="/ordemservico" routerLinkActive="active">Ordem de Serviços</a>
+      <a class="nav-item nav-link" routerLink="/servico" routerLinkActive="active">Serviços</a>
+      <a class="nav-item nav-link" routerLink="/funcionario" routerLinkActive="active">Funcionários</a>
+      <button class="btn btn-link nav-item nav-link" (click)="logout()">Sair</button>
+  </div>
 </nav>
 
-<!-- main app container -->
-<div class="app-container" [ngClass]="{ 'bg-light': user }">
-    <router-outlet></router-outlet>
+
+
+
+<div class="app-container" >
+  <router-outlet></router-outlet>
 </div>

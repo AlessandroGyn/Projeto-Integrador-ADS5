@@ -2,15 +2,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-// used to create fake backend
-//import { fakeBackendProvider } from './_helpers';
-
+import { AuthGuard } from './services/auth.guard';
 import { AppRoutingModule } from './app-routing.module';
-//import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
-//import { AlertComponent } from './_components';
-//import { HomeComponent } from './home';
 import { AgendamentoComponent } from './agendamento/agendamento.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { FuncionarioComponent } from './funcionario/funcionario.component';
@@ -43,6 +37,7 @@ import { CalendarModule } from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
 import { OrdemServicoConfirmationDialogComponent } from './ordemservico/ordemservicoconfirmation-dialog/ordemservicoconfirmation-dialog.component';
 import { LoginComponent } from './login/login.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
     imports: [
@@ -80,7 +75,6 @@ import { LoginComponent } from './login/login.component';
         OrdemServicoConfirmationDialogComponent,
         LoginComponent
 
-
     ],
     providers: [
         AgendamentoService,
@@ -90,8 +84,9 @@ import { LoginComponent } from './login/login.component';
         ServicoService,
         MessageService,
         DialogService,
-        DropdownModule
-
+        DropdownModule,
+        AuthGuard,
+        AuthService
     ],
     bootstrap: [AppComponent]
 })
